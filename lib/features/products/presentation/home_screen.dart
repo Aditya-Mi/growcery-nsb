@@ -86,7 +86,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const EditAddress('uid'),
+                              builder: (context) => const EditAddress(),
                             ),
                           );
                         },

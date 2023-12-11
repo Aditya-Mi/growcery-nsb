@@ -9,7 +9,7 @@ final addressRepositoryProvider =
     Provider((ref) => AddressRepository(ref: ref));
 
 class AddressRepository {
-  String url = 'https://growcery-x6sg.onrender.com/api/addresses';
+  String url = 'https://growcery-x6sg.onrender.com/api/v1/address';
   Ref ref;
   AddressRepository({
     required this.ref,
@@ -44,10 +44,27 @@ class AddressRepository {
     }
   }
 
+  Future<bool> deleteAddress(String id) async {
+    try {
+      var u = Uri.parse('$url/deleteaddress/$id');
+      var response = await http.delete(u, headers: await _getHeader());
+      if (response.statusCode == 204) {
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+    return false;
+  }
+
   Future<bool> addAddress(Address address) async {
     try {
       var u = Uri.parse('$url/addaddress');
-      var response = await http.post(u, headers: await _getHeader());
+      final address1 = jsonEncode(address.toJson());
+      var response =
+          await http.post(u, headers: await _getHeader(), body: address1);
       if (response.statusCode == 201) {
         return true;
       }

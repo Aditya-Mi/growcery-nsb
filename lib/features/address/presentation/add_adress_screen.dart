@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/common_widgets/custom_button.dart';
 import 'package:grocery_app/constants/colors.dart';
@@ -7,8 +6,7 @@ import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
 
 class EditAddress extends ConsumerStatefulWidget {
-  final String uid;
-  const EditAddress(this.uid, {super.key});
+  const EditAddress({super.key});
 
   @override
   ConsumerState<EditAddress> createState() => _EditAddressState();
@@ -25,7 +23,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
   var _enteredAlternateNo = '';
   var _addressType = '';
 
-  void _updateAddress() async {
+  Future<void> _updateAddress() async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
@@ -41,7 +39,11 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       alternativePhone: _enteredAlternateNo,
       addressType: _addressType,
     );
-    await ref.read(addressProvider.notifier).addAddress(address);
+    final success =
+        await ref.read(addressProvider.notifier).addAddress(address);
+    if (success && context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -337,8 +339,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomButton(
-        function: () {
-          _updateAddress();
+        function: () async {
+          await _updateAddress();
         },
         title: 'Save Address',
       ),

@@ -17,11 +17,27 @@ class AddressNotifier extends AsyncNotifier<List<Address>> {
     return await _addressRepository.getAddresses();
   }
 
-  Future<void> addAddress(Address address) async {
+  Future<bool> addAddress(Address address) async {
+    bool success = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await _addressRepository.addAddress(address);
-      return getAddresses();
+      success = await _addressRepository.addAddress(address);
+      if (success) {
+        return await getAddresses();
+      }
+      return await getAddresses();
+    });
+    if (success) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> deleteAddress(String id) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await _addressRepository.deleteAddress(id);
+      return await getAddresses();
     });
   }
 }
