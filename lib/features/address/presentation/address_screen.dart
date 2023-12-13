@@ -73,7 +73,7 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const EditAddress(),
+                builder: (context) => EditAddress(),
               ),
             );
           },

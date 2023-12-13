@@ -4,9 +4,14 @@ import 'package:grocery_app/common_widgets/custom_button.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/utils/snackbar.dart';
 
 class EditAddress extends ConsumerStatefulWidget {
-  const EditAddress({super.key});
+  final Address? address;
+  const EditAddress({
+    super.key,
+    this.address,
+  });
 
   @override
   ConsumerState<EditAddress> createState() => _EditAddressState();
@@ -23,25 +28,66 @@ class _EditAddressState extends ConsumerState<EditAddress> {
   var _enteredAlternateNo = '';
   var _addressType = '';
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.address != null) {
+      _enteredName = widget.address!.fullName;
+      _enteredLocality = widget.address!.locality;
+      _enteredZipcode = widget.address!.pincode;
+      _enteredCity = widget.address!.city;
+      _enteredLandmark = widget.address!.landmark;
+      _enteredState = widget.address!.state;
+      _enteredAlternateNo = widget.address!.alternativePhone;
+      _addressType = widget.address!.addressType;
+    }
+  }
+
   Future<void> _updateAddress() async {
+    bool success = false;
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
     }
     _form.currentState!.save();
-    final address = Address(
-      fullName: _enteredName,
-      locality: _enteredLocality,
-      pincode: _enteredZipcode,
-      city: _enteredCity,
-      state: _enteredState,
-      landmark: _enteredLandmark,
-      alternativePhone: _enteredAlternateNo,
-      addressType: _addressType,
-    );
-    final success =
-        await ref.read(addressProvider.notifier).addAddress(address);
+    Address address;
+    if (widget.address != null) {
+      address = Address(
+        fullName: _enteredName,
+        locality: _enteredLocality,
+        pincode: _enteredZipcode,
+        city: _enteredCity,
+        state: _enteredState,
+        landmark: _enteredLandmark,
+        alternativePhone: _enteredAlternateNo,
+        addressType: _addressType,
+        isDefault: false,
+        id: widget.address!.id,
+      );
+    } else {
+      address = Address(
+        fullName: _enteredName,
+        locality: _enteredLocality,
+        pincode: _enteredZipcode,
+        city: _enteredCity,
+        state: _enteredState,
+        landmark: _enteredLandmark,
+        alternativePhone: _enteredAlternateNo,
+        addressType: _addressType,
+      );
+    }
+
+    if (widget.address != null) {
+      success = await ref.read(addressProvider.notifier).updateAddress(address);
+    } else {
+      success = await ref.read(addressProvider.notifier).addAddress(address);
+    }
     if (success && context.mounted) {
+      Helper.showSnackbar(
+          context,
+          widget.address != null
+              ? 'Address updated successfully'
+              : 'New address added successfully');
       Navigator.of(context).pop();
     }
   }
@@ -91,6 +137,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                         TextFormField(
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Ex. John Doe"),
+                          initialValue: _enteredName,
                           enableSuggestions: false,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -123,6 +170,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'Locality'),
                         TextFormField(
+                          initialValue: _enteredLocality,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Enter locality"),
                           enableSuggestions: false,
@@ -155,6 +203,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'Zipcode (postal code)'),
                         TextFormField(
+                          initialValue: _enteredZipcode,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Ex. 123456"),
                           enableSuggestions: false,
@@ -187,6 +236,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'City'),
                         TextFormField(
+                          initialValue: _enteredCity,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Enter city"),
                           enableSuggestions: false,
@@ -219,6 +269,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'State'),
                         TextFormField(
+                          initialValue: _enteredState,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Enter state"),
                           enableSuggestions: false,
@@ -251,6 +302,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'Landmark'),
                         TextFormField(
+                          initialValue: _enteredLandmark,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Enter landmark"),
                           enableSuggestions: false,
@@ -283,6 +335,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'Alternate mobile no.'),
                         TextFormField(
+                          initialValue: _enteredAlternateNo,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Enter alternate mobile no."),
                           enableSuggestions: false,
@@ -315,6 +368,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       children: [
                         const Field(field: 'Address type'),
                         TextFormField(
+                          initialValue: _addressType,
                           decoration: CommonStyle.inputDecoration(
                               hintText: "Select Address type"),
                           enableSuggestions: false,

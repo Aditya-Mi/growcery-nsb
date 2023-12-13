@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/address/data/address.dart';
+import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
 
 class AddressListItem extends ConsumerStatefulWidget {
@@ -62,7 +63,15 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
                       ),
                       const Spacer(),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditAddress(
+                                address: widget.address,
+                              ),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.edit_outlined),
                         padding: const EdgeInsets.all(0),
                       ),

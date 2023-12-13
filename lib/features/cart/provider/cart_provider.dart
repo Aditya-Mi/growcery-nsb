@@ -13,7 +13,6 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   Future<List<CartItem>> build() => getCartItems();
 
   Future<void> addItemToCart(String id) async {
-    print('add function called');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       return await _cartRepository.addItemToCart(id);
@@ -21,7 +20,6 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   }
 
   Future<void> deleteItemFromCart(String id) async {
-    print('delete function called');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       return await _cartRepository.deleteItemFromCart(id);
@@ -29,7 +27,6 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   }
 
   Future<void> increaseQuantityItem(String id) async {
-    print('increase function called');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       return await _cartRepository.increaseQuantityItem(id);
@@ -37,7 +34,6 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   }
 
   Future<void> decreaseQuantityItem(String id) async {
-    print('decrease function called');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       return await _cartRepository.decreaseQuantityItem(id);

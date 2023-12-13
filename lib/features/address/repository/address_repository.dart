@@ -62,10 +62,27 @@ class AddressRepository {
   Future<bool> addAddress(Address address) async {
     try {
       var u = Uri.parse('$url/addaddress');
-      final address1 = jsonEncode(address.toJson());
+      final address1 = jsonEncode(address.toJsonWithoutDefault());
       var response =
           await http.post(u, headers: await _getHeader(), body: address1);
       if (response.statusCode == 201) {
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+    }
+    return false;
+  }
+
+  Future<bool> updateAddress(Address address) async {
+    try {
+      var u = Uri.parse('$url/updateaddress/${address.id}');
+      final address1 = jsonEncode(address.toJsonWithDefault());
+      var response =
+          await http.patch(u, headers: await _getHeader(), body: address1);
+      if (response.statusCode == 200) {
         return true;
       }
     } catch (e) {

@@ -135,7 +135,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
     final filters = ref.watch(filterProvider);
     return WillPopScope(
       onWillPop: () async {
-        print('on will pop scope called');
         ref.read(filterProvider.notifier).update(
               (state) => Filters(
                 category: null,

@@ -135,8 +135,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                         ),
                       );
                     } else {
-                      Helper.showSnackbar(context,
-                          'There was an error logging in. Please try again later.');
+                      if (context.mounted) {
+                        Helper.showSnackbar(context,
+                            'There was an error logging in. Please try again later.');
+                      }
                     }
                   } else {
                     Helper.showSnackbar(context, 'Otp didn\'t match');
