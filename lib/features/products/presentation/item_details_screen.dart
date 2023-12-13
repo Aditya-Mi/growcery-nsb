@@ -23,11 +23,24 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
     await ref.read(cartItemsProvider.notifier).deleteItemFromCart(id);
   }
 
+  String extractQuantity(String inputString) {
+    RegExp regex = RegExp(r'\(([^)]+)\)');
+    RegExpMatch? match = regex.firstMatch(inputString);
+    return match != null ? match.group(1)?.trim() ?? '' : '';
+  }
+
+  String extractProductDesc(String inputString) {
+    RegExp regex = RegExp(r'([^()]+)');
+    RegExpMatch? match = regex.firstMatch(inputString);
+    return match != null ? match.group(1)?.trim() ?? '' : '';
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final cartNotifer = ref.watch(cartItemsProvider);
+
     return cartNotifer.when(
       data: (data) {
         final isInCart =
@@ -35,12 +48,13 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
         print('$isInCart');
         int quantity = 0;
         if (isInCart) {
-          final cartItem = data.firstWhere(
+          final cartItem = data.cartItem.firstWhere(
               (element) => element.itemDetails.id == widget.product.id);
           quantity = cartItem.quantity;
         }
 
         return Scaffold(
+          backgroundColor: lightBg,
           body: SizedBox(
             height: double.infinity,
             width: double.infinity,
@@ -52,9 +66,9 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                     ClipPath(
                       clipper: CustomClipPath(),
                       child: Container(
-                        height: h * 0.44549763033,
+                        height: h * 0.47549763033,
                         width: double.infinity,
-                        color: lightBg,
+                        color: Colors.white,
                       ),
                     ),
                     Positioned(
@@ -72,8 +86,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        style:
-                            IconButton.styleFrom(backgroundColor: Colors.white),
+                        style: IconButton.styleFrom(backgroundColor: lightBg),
                         icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       ),
                     ),
@@ -102,7 +115,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                       Row(
                         children: [
                           Text(
-                            '1kg, \u{20B9}${widget.product.price}',
+                            '${extractQuantity(widget.product.description)}, \u{20B9}${widget.product.price}',
                             style: TextStyle(
                               fontFamily: 'DMSans',
                               fontSize: h * 0.0236,
@@ -165,7 +178,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                         height: h * 0.0105,
                       ),
                       Text(
-                        widget.product.description,
+                        extractProductDesc(widget.product.description),
                         style: TextStyle(
                           fontFamily: 'DMSans',
                           fontSize: h * 0.0189,
@@ -180,9 +193,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: h * 0.03791469194,
-                ),
+                const Spacer(),
                 isInCart
                     ? CustomButton(
                         title: 'Remove from cart',
@@ -196,6 +207,9 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                           await addItemToCart(widget.product.id);
                         },
                       ),
+                const SizedBox(
+                  height: 30,
+                ),
               ],
             ),
           ),

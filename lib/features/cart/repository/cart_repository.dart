@@ -22,15 +22,13 @@ class CartRepository {
     };
   }
 
-  Future<List<CartItem>> getCartItems() async {
+  Future<Cart> getCart() async {
     try {
       var u = Uri.parse('$url/getcartitems');
       var response = await http.get(u, headers: await _getHeader());
-      var result = jsonDecode(response.body)['cart']['items'];
+      var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        List<CartItem> cartItmes =
-            result.map<CartItem>((model) => CartItem.fromJson(model)).toList();
-        return cartItmes;
+        return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
     } catch (e) {
@@ -38,15 +36,13 @@ class CartRepository {
     }
   }
 
-  Future<List<CartItem>> addItemToCart(String id) async {
+  Future<Cart> addItemToCart(String id) async {
     try {
       var u = Uri.parse('$url/addtocart/$id');
       var response = await http.post(u, headers: await _getHeader());
-      var result = jsonDecode(response.body)['cart']['items'];
+      var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        List<CartItem> cartItmes =
-            result.map<CartItem>((model) => CartItem.fromJson(model)).toList();
-        return cartItmes;
+        return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
     } catch (e) {
@@ -54,17 +50,14 @@ class CartRepository {
     }
   }
 
-  Future<List<CartItem>> deleteItemFromCart(String id) async {
+  Future<Cart> deleteItemFromCart(String id) async {
     print('delete function called in repo');
     try {
       var u = Uri.parse('$url/deleteitem/$id');
       var response = await http.delete(u, headers: await _getHeader());
-      var result = jsonDecode(response.body)['cart']['items'];
+      var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        List<CartItem> cartItmes =
-            result.map<CartItem>((model) => CartItem.fromJson(model)).toList();
-        print('$cartItmes');
-        return cartItmes;
+        return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
     } catch (e) {
@@ -72,15 +65,13 @@ class CartRepository {
     }
   }
 
-  Future<List<CartItem>> increaseQuantityItem(String id) async {
+  Future<Cart> increaseQuantityItem(String id) async {
     try {
       var u = Uri.parse('$url/quantityincrease/$id');
       var response = await http.post(u, headers: await _getHeader());
-      var result = jsonDecode(response.body)['cart']['items'];
+      var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        List<CartItem> cartItmes =
-            result.map<CartItem>((model) => CartItem.fromJson(model)).toList();
-        return cartItmes;
+        return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
     } catch (e) {
@@ -88,15 +79,13 @@ class CartRepository {
     }
   }
 
-  Future<List<CartItem>> decreaseQuantityItem(String id) async {
+  Future<Cart> decreaseQuantityItem(String id) async {
     try {
       var u = Uri.parse('$url/quantitydecrease/$id');
       var response = await http.post(u, headers: await _getHeader());
-      var result = jsonDecode(response.body)['cart']['items'];
+      var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        List<CartItem> cartItmes =
-            result.map<CartItem>((model) => CartItem.fromJson(model)).toList();
-        return cartItmes;
+        return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
     } catch (e) {

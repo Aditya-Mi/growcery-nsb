@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:grocery_app/common_widgets/custom_button.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/cart/presentation/widgets/cart_list_item.dart';
@@ -33,20 +32,83 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         scrolledUnderElevation: 0.0,
       ),
       body: cartItems.when(
-        data: (data) => data.isEmpty
+        data: (data) => data.cartItem.isEmpty
             ? const Center(
                 child: Text('No items in cart'),
               )
-            : ListView.separated(
-                itemCount: data.length,
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-                itemBuilder: (context, index) {
-                  return CartListItem(
-                    cartItem: data[index],
-                  );
-                },
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: data.cartItem.length,
+                      separatorBuilder: (context, index) {
+                        return const Divider();
+                      },
+                      itemBuilder: (context, index) {
+                        return CartListItem(
+                          cartItem: data.cartItem[index],
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    height: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Total:',
+                              style: TextStyle(
+                                fontFamily: 'NunitoSans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              '${data.totalPrice}',
+                              style: const TextStyle(
+                                fontFamily: 'NunitoSans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Items:',
+                              style: TextStyle(
+                                fontFamily: 'NunitoSans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              '${data.totalItems}',
+                              style: const TextStyle(
+                                fontFamily: 'NunitoSans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomButton(title: 'Checkout', function: () {})
+                      ],
+                    ),
+                  ),
+                ],
               ),
         error: (error, stackTrace) {
           return Center(
@@ -61,8 +123,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           );
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CustomButton(title: 'Checkout', function: () {}),
     );
   }
 }

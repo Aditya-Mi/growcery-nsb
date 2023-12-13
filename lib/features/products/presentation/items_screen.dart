@@ -133,6 +133,8 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
   Widget build(BuildContext context) {
     final products = ref.watch(productProvider);
     final filters = ref.watch(filterProvider);
+    final categories = ref.read(categoryProvider).value;
+    final categoryList = categories!.map((category) => category.name).toList();
     return WillPopScope(
       onWillPop: () async {
         ref.read(filterProvider.notifier).update(
@@ -166,8 +168,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
             List<Product> filteredList = data;
             if (filters.category != null) {
               filteredList = filteredList
-                  .where((product) =>
-                      product.category.name == filters.category!.name)
+                  .where((product) => product.category.name == filters.category)
                   .toList();
             }
             if (filters.isVeg != null) {
@@ -183,15 +184,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                 filteredList.sort((a, b) => b.price.compareTo(a.price));
               }
             }
-            // if(filters.ratingSort != null){
-            //    switch (filters.priceSort){
-            //      case SortState.asc:
-            //        filteredList.sort((a, b) => a.rating.compareTo(b.rating));
-            //      case SortState.desc:
-            //        filteredList.sort((a, b) => b.rating.compareTo(a.rating));
-            //      default:
-            //    }
-            // }
             return filteredList.isEmpty
                 ? const Center(
                     child: Text('No items found'),
@@ -237,33 +229,46 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                               ),
                             ),
                             const SizedBox(
-                              width: 20,
+                              width: 15,
                             ),
                             GestureDetector(
                               child: Container(
+                                height: 48,
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: lightPrimary),
                                 ),
-                                child: const Row(
-                                  children: [
-                                    Text(
-                                      'Type',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                child: DropdownButton<String>(
+                                  hint: const Text(
+                                    'Type',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Icon(
-                                      Icons.arrow_drop_down_sharp,
-                                    ),
-                                  ],
+                                  ),
+                                  underline: const SizedBox(),
+                                  items:
+                                      categoryList.map(buildMenuItem).toList(),
+                                  value: filters.category,
+                                  onChanged: (value) => setState(
+                                    () {
+                                      ref.read(filterProvider.notifier).update(
+                                            (state) => Filters(
+                                              category: value,
+                                              priceSort: state.priceSort,
+                                              ratingSort: state.ratingSort,
+                                              isVeg: state.isVeg,
+                                            ),
+                                          );
+                                    },
+                                  ),
+                                  icon: const Icon(Icons.arrow_drop_down),
                                 ),
                               ),
                             ),
                             const SizedBox(
-                              width: 20,
+                              width: 15,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -353,4 +358,12 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
       ),
     );
   }
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: const TextStyle(),
+        ),
+      );
 }

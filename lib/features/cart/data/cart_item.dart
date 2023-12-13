@@ -1,4 +1,25 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+class Cart {
+  List<CartItem> cartItem;
+  int totalPrice;
+  int totalItems;
+
+  Cart({
+    required this.cartItem,
+    required this.totalPrice,
+    required this.totalItems,
+  });
+
+  factory Cart.fromJson(Map<String, dynamic> json) {
+    return Cart(
+      cartItem: json['cart']['items']
+          .map<CartItem>((model) => CartItem.fromJson(model))
+          .toList(),
+      totalPrice: json["totalPrice"],
+      totalItems: json["totalItems"],
+    );
+  }
+}
+
 class CartItem {
   ItemDetails itemDetails;
   int quantity;

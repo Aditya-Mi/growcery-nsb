@@ -2,15 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/cart/data/cart_item.dart';
 import 'package:grocery_app/features/cart/repository/cart_repository.dart';
 
-final cartItemsProvider = AsyncNotifierProvider<CartNotifier, List<CartItem>>(
+final cartItemsProvider = AsyncNotifierProvider<CartNotifier, Cart>(
   () => CartNotifier(),
 );
 
-class CartNotifier extends AsyncNotifier<List<CartItem>> {
+class CartNotifier extends AsyncNotifier<Cart> {
   CartRepository get _cartRepository => ref.read(cartRepositoryProvider);
 
   @override
-  Future<List<CartItem>> build() => getCartItems();
+  Future<Cart> build() => getCart();
 
   Future<void> addItemToCart(String id) async {
     state = const AsyncValue.loading();
@@ -41,7 +41,8 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   }
 
   bool isInCart(String id) {
-    var contain = state.value?.where((element) => element.itemDetails.id == id);
+    var contain =
+        state.value?.cartItem.where((element) => element.itemDetails.id == id);
     if (contain != null && contain.isEmpty) {
       return false;
     }
@@ -53,12 +54,12 @@ class CartNotifier extends AsyncNotifier<List<CartItem>> {
   }
 
   int getQuantity(String id) {
-    final cartItem =
-        state.value!.firstWhere((element) => element.itemDetails.id == id);
+    final cartItem = state.value!.cartItem
+        .firstWhere((element) => element.itemDetails.id == id);
     return cartItem.quantity;
   }
 
-  Future<List<CartItem>> getCartItems() async {
-    return await _cartRepository.getCartItems();
+  Future<Cart> getCart() async {
+    return await _cartRepository.getCart();
   }
 }

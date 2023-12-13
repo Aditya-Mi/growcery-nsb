@@ -18,6 +18,7 @@ class EditAddress extends ConsumerStatefulWidget {
 }
 
 class _EditAddressState extends ConsumerState<EditAddress> {
+  var addressType = ['Home', 'Work', 'Other'];
   final _form = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredLocality = '';
@@ -26,7 +27,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
   var _enteredLandmark = '';
   var _enteredState = '';
   var _enteredAlternateNo = '';
-  var _addressType = '';
+  var _addressType = 'Home';
 
   @override
   void initState() {
@@ -101,7 +102,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,
         title: const Text(
-          'Add ahipping address',
+          'Add Shipping address',
           style: TextStyle(
               fontFamily: 'Merriweather',
               fontWeight: FontWeight.bold,
@@ -356,31 +357,44 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: h * 0.10,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Field(field: 'Address type'),
-                        TextFormField(
-                          initialValue: _addressType,
-                          decoration: CommonStyle.inputDecoration(
-                              hintText: "Select Address type"),
-                          enableSuggestions: false,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Cannot be empty';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _addressType = value!;
-                          },
+                        // TextFormField(
+                        //   initialValue: _addressType,
+                        //   decoration: CommonStyle.inputDecoration(
+                        //       hintText: "Select Address type"),
+                        //   enableSuggestions: false,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Cannot be empty';
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onSaved: (value) {
+                        //     _addressType = value!;
+                        //   },
+                        // ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: DropdownButtonFormField<String>(
+                            decoration:
+                                const InputDecoration.collapsed(hintText: ''),
+                            items: addressType.map(buildMenuItem).toList(),
+                            value: _addressType,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            isExpanded: true,
+                            onChanged: (value) =>
+                                setState(() => _addressType = value!),
+                          ),
                         ),
                       ],
                     ),
@@ -400,6 +414,14 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       ),
     );
   }
+
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+        value: item,
+        child: Text(
+          item,
+          style: const TextStyle(),
+        ),
+      );
 }
 
 class Field extends StatelessWidget {

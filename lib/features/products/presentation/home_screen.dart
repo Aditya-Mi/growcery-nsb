@@ -176,7 +176,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             onTap: () {
                               ref.read(filterProvider.notifier).update(
                                     (state) => Filters(
-                                      category: data[index],
+                                      category: data[index].name,
                                       priceSort: state.priceSort,
                                       ratingSort: state.ratingSort,
                                       isVeg: state.isVeg,

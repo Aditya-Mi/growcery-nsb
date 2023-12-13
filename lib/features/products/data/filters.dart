@@ -7,7 +7,7 @@ enum SortState {
 }
 
 class Filters {
-  final Category? category;
+  final String? category;
   final SortState? priceSort;
   final SortState? ratingSort;
   final bool? isVeg;
