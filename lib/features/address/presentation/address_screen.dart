@@ -50,8 +50,16 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
             child: Text(error.toString()),
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
+        loading: () => ListView.separated(
+          itemBuilder: (context, index) {
+            return const AddressListItemShimmer();
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              height: 15,
+            );
+          },
+          itemCount: 5,
         ),
       ),
       floatingActionButton: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/cart/data/cart_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -151,6 +152,62 @@ class CartListItem extends ConsumerWidget {
                           color: Colors.white,
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CartListItemShimmer extends StatelessWidget {
+  const CartListItemShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
+    return Container(
+      height: h * .12,
+      width: double.infinity,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ShimmerWidget.circular(
+            height: h * .10,
+            width: w * 0.19,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ShimmerWidget.rectangular(
+                  width: 150,
+                  height: h * 0.0159,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShimmerWidget.rectangular(
+                            width: 50, height: h * 0.0139),
+                        ShimmerWidget.rectangular(width: 50, height: h * 0.0159)
+                      ],
                     ),
                   ],
                 ),

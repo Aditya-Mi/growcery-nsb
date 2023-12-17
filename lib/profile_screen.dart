@@ -6,7 +6,7 @@ import 'package:grocery_app/features/address/presentation/address_screen.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/profile_list_item.dart';
-import 'package:grocery_app/utils/snackbar.dart';
+import 'package:grocery_app/utils/helper_functions.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});

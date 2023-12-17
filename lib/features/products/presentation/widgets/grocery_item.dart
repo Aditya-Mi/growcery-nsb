@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
 import 'package:grocery_app/features/products/data/product.dart';
@@ -215,6 +216,21 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class GroceryShimmerListItem extends StatelessWidget {
+  const GroceryShimmerListItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShimmerWidget.circular(
+      width: 100,
+      height: 130,
+      shapeBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
       ),
     );
   }

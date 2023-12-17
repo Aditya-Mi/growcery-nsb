@@ -7,7 +7,7 @@ import 'package:grocery_app/features/authentication/presentation/login_screen.da
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/main_screen.dart';
-import 'package:grocery_app/utils/snackbar.dart';
+import 'package:grocery_app/utils/helper_functions.dart';
 
 class OtpVerificationScreen extends ConsumerStatefulWidget {
   final String phoneNo;

@@ -10,6 +10,7 @@ import 'package:grocery_app/features/products/presentation/items_screen.dart';
 import 'package:grocery_app/features/products/presentation/widgets/grocery_item.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_category_list_item.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_heading_item.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/features/products/provider/product_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -20,6 +21,23 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    checkInternetConnection();
+    super.initState();
+  }
+
+  Future<void> checkInternetConnection() async {
+    final isInternetAvailable = await ref.read(networkProvider.future);
+    if (!isInternetAvailable && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -279,8 +297,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     );
                   },
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
+                  loading: () => Expanded(
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 25,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        return const HomeCategoryShimmerListItem();
+                      },
+                      itemCount: 12,
+                    ),
                   ),
                 ),
                 HomeHeading(
@@ -321,8 +352,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
                     loading: () {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 20,
+                          childAspectRatio: 1.3,
+                        ),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return const GroceryShimmerListItem();
+                        },
                       );
                     },
                   ),

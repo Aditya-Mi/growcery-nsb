@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/common_widgets/custom_button.dart';
+import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
 import 'package:grocery_app/features/cart/presentation/widgets/cart_list_item.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
-import 'package:grocery_app/utils/snackbar.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
+import 'package:grocery_app/utils/helper_functions.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -19,6 +21,23 @@ class CartScreen extends ConsumerStatefulWidget {
 
 class _CartScreenState extends ConsumerState<CartScreen> {
   Address? _selectedAddress;
+
+  @override
+  void initState() {
+    checkInternetConnection();
+    super.initState();
+  }
+
+  Future<void> checkInternetConnection() async {
+    final isInternetAvailable = await ref.read(networkProvider.future);
+    if (!isInternetAvailable && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection.'),
+        ),
+      );
+    }
+  }
 
   void bottomSheet(BuildContext context, List<Address> addresses) {
     showModalBottomSheet(
@@ -116,8 +135,13 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       ),
       body: cartItems.when(
         data: (data) => data.cartItem.isEmpty
-            ? const Center(
-                child: Text('No items in cart'),
+            ? Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/empty_cart_image.png'))),
               )
             : SizedBox(
                 height: double.infinity,
@@ -423,8 +447,40 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           );
         },
         loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return const CartListItemShimmer();
+                  },
+                  itemCount: 5,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ShimmerWidget.circular(
+                width: double.infinity,
+                height: 200,
+                shapeBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const ShimmerWidget.circular(
+                width: double.infinity,
+                height: 200,
+                shapeBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),

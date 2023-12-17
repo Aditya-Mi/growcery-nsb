@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
@@ -96,6 +97,21 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AddressListItemShimmer extends StatelessWidget {
+  const AddressListItemShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShimmerWidget.circular(
+      width: double.infinity,
+      height: 100,
+      shapeBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
