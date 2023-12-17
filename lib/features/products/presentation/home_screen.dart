@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
+import 'package:grocery_app/features/address/provider/address_provider.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
-import 'package:grocery_app/features/products/presentation/categories_screen.dart';
 import 'package:grocery_app/features/products/presentation/items_screen.dart';
 import 'package:grocery_app/features/products/presentation/widgets/grocery_item.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_category_list_item.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final h = MediaQuery.of(context).size.height;
     final categories = ref.watch(categoryProvider);
     final products = ref.watch(productProvider);
+    final addresses = ref.watch(addressProvider);
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
@@ -37,71 +39,138 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 expandedHeight: 80,
                 title: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.grey,
-                        backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1682687220945-922198770e60?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Welcome',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'DMSans',
-                              color: grey,
+                  child: addresses.when(
+                    data: (data) {
+                      if (data.isEmpty) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Welcome',
+                              style: TextStyle(
+                                fontSize: 34,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'DMSans',
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'John Doe',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'DMSans',
-                              color: Colors.black,
+                            const Spacer(),
+                            TextButton.icon(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                              ),
+                              icon: SvgPicture.asset('assets/icons/pin.svg'),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const EditAddress(),
+                                  ),
+                                );
+                              },
+                              label: const Text(
+                                'Add address',
+                                style: TextStyle(
+                                  inherit: true,
+                                  fontFamily: 'DMSans',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: dark,
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                      const Spacer(),
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                          ],
+                        );
+                      } else {
+                        Address address = data[0];
+                        final finalAddress =
+                            "${address.locality}, ${address.landmark}, ${address.city}, ${address.state}";
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      address.fullName,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'DMSans',
+                                        color: Colors.black,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      finalAddress,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'DMSans',
+                                        color: grey,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                ),
+                                icon: SvgPicture.asset('assets/icons/pin.svg'),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const EditAddress(),
+                                    ),
+                                  );
+                                },
+                                label: const Text(
+                                  'Add address',
+                                  style: TextStyle(
+                                    inherit: true,
+                                    fontFamily: 'DMSans',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: dark,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                        ),
-                        icon: SvgPicture.asset('assets/icons/pin.svg'),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const EditAddress(),
-                            ),
-                          );
-                        },
-                        label: const Text(
-                          'Add address',
-                          style: TextStyle(
-                            inherit: true,
-                            fontFamily: 'DMSans',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: dark,
-                          ),
-                        ),
-                      ),
-                    ],
+                        );
+                      }
+                    },
+                    error: (error, stackTrace) {
+                      return Center(
+                        child: Text(error.toString()),
+                      );
+                    },
+                    loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -121,8 +190,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: TextField(
                     keyboardType: TextInputType.text,
-                    onChanged: (value) {},
-                    onEditingComplete: () {},
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -141,9 +208,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           borderSide: BorderSide.none),
                       contentPadding: const EdgeInsets.all(10),
                     ),
+                    onChanged: (value) {},
+                    onEditingComplete: () {},
                   ),
                 ),
-              ),
+              )
             ];
           },
           body: Container(
@@ -153,24 +222,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                HomeHeading(
-                  heading: 'Categories',
-                  function: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CategoriesScreen(),
-                      ),
-                    );
-                  },
+                const Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  child: Text(
+                    'Categories',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: dark,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DMSans',
+                    ),
+                  ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  height: 100,
-                  child: categories.when(
-                    data: (data) {
-                      return ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.length <= 5 ? data.length : 5,
+                categories.when(
+                  data: (data) {
+                    return Expanded(
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 25,
+                          childAspectRatio: 1,
+                        ),
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -193,23 +268,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           );
                         },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            width: 20,
-                          );
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Center(
-                        child: Text(
-                          error.toString(),
-                        ),
-                      );
-                    },
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                        itemCount: data.length,
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Center(
+                      child: Text(
+                        error.toString(),
+                      ),
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
                 HomeHeading(

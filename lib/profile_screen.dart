@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/presentation/address_screen.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/profile_list_item.dart';
+import 'package:grocery_app/utils/snackbar.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -15,13 +17,20 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void signOut() async {
-    //await ref.read(authProvider).signOut();
-    if (context.mounted) {
+    var success = await ref.read(authProvider.notifier).logout();
+    if (context.mounted && success) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const LoginScreen(),
           ),
           (Route<dynamic> route) => false);
+    } else {
+      if (context.mounted) {
+        Helper.showSnackbar(
+          context,
+          'There was an error while logging out. Please try again later',
+        );
+      }
     }
   }
 
@@ -29,15 +38,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    final user = ref.watch(authProvider);
+    final mobileNo = ref.watch(mobileNoProvider);
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: SvgPicture.asset('assets/icons/search.svg'),
-          onPressed: () {},
-        ),
         title: const Text(
           'Profile',
           style: TextStyle(
@@ -81,8 +86,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ],
       ),
       backgroundColor: Colors.white,
-      body: user.when(
-        data: (user) {
+      body: mobileNo.when(
+        data: (mobileNo) {
           return Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
@@ -91,33 +96,34 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.grey,
+                      radius: 30,
                       backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1694449263303-a90c4ce18112?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'),
+                          'https://images.unsplash.com/photo-1682685797736-dabb341dc7de?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
                     ),
-                    SizedBox(
-                      width: w * 0.053,
+                    const SizedBox(
+                      width: 15,
                     ),
-                    const Column(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "John Doe",
+                        const Text(
+                          'Mobile Number',
                           style: TextStyle(
                             fontFamily: 'NuntioSans',
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 18,
+                            color: grey,
                           ),
                         ),
                         Text(
-                          "johndoe@gmail.com",
-                          style: TextStyle(
+                          mobileNo,
+                          style: const TextStyle(
                             fontFamily: 'NuntioSans',
-                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
                       ],

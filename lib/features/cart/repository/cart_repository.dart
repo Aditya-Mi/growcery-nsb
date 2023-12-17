@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/features/cart/data/cart_item.dart';
@@ -57,6 +58,7 @@ class CartRepository {
       var response = await http.delete(u, headers: await _getHeader());
       var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
+        print(response.statusCode);
         return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
@@ -91,5 +93,25 @@ class CartRepository {
     } catch (e) {
       throw e.toString();
     }
+  }
+
+  Future<bool> placeOrder(String addressId) async {
+    try {
+      var u = Uri.parse('$url/order');
+      var body = jsonEncode({"addressId": addressId});
+      var response =
+          await http.post(u, headers: await _getHeader(), body: body);
+      var result = jsonDecode(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      return false;
+    }
+    return false;
   }
 }

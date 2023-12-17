@@ -131,6 +131,8 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     final products = ref.watch(productProvider);
     final filters = ref.watch(filterProvider);
     final categories = ref.read(categoryProvider).value;
@@ -200,7 +202,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                                 bottomSheet(context);
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: lightPrimary),
@@ -214,7 +216,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                                     const Text(
                                       'Sort',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -233,13 +235,15 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                             ),
                             GestureDetector(
                               child: Container(
-                                height: 48,
-                                padding: const EdgeInsets.all(10),
+                                height: 36,
+                                width: w * 0.416,
+                                padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(color: lightPrimary),
                                 ),
                                 child: DropdownButton<String>(
+                                  isExpanded: true,
                                   hint: const Text(
                                     'Type',
                                     style: TextStyle(
@@ -294,7 +298,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                                 }
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(7),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(color: lightPrimary),
@@ -306,7 +310,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                                     Text(
                                       'Veg',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: filters.isVeg != null &&
                                                 filters.isVeg == true
@@ -326,10 +330,10 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           padding: const EdgeInsets.all(20),
                           itemCount: filteredList.length,
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 20,
+                            mainAxisSpacing: h * 0.0255,
+                            crossAxisSpacing: w * 0.055,
                             childAspectRatio: 0.76168224299,
                           ),
                           itemBuilder: (context, index) {

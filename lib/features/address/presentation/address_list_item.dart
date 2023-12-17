@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -30,26 +31,18 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 10,
-          ),
           Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.rectangle,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 10,
-                  color: Color.fromRGBO(138, 149, 158, 0.15),
-                ),
-              ],
-            ),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: lightGrey)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -57,7 +50,7 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
                         widget.address.fullName,
                         style: const TextStyle(
                           fontFamily: 'NunitoSans',
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -87,17 +80,15 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
                     ],
                   ),
                 ),
-                const Divider(
-                  height: 1,
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Text(
                     finalAddress,
                     maxLines: 2,
                     style: const TextStyle(
                       fontFamily: 'NunitoSans',
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                 ),

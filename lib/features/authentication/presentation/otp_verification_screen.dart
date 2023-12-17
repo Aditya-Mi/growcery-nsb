@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/main_screen.dart';
@@ -27,11 +30,51 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   TextEditingController controller4 = TextEditingController();
   TextEditingController controller5 = TextEditingController();
   TextEditingController controller6 = TextEditingController();
+  bool countDownComplete = false;
+  Timer? countdownTimer;
+  Duration duration = const Duration(minutes: 2);
   late String enteredOtp;
 
   @override
   void initState() {
     super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    countdownTimer =
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void setCountDown() {
+    const reduceSecondsBy = 1;
+    setState(() {
+      final seconds = duration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+        setState(() {
+          countDownComplete = true;
+        });
+      } else {
+        duration = Duration(seconds: seconds);
+        print(duration);
+      }
+    });
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigitMinutes =
+        duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String twoDigitSeconds =
+        duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+    if (duration.inHours == 0) {
+      return '$twoDigitMinutes:$twoDigitSeconds';
+    } else if (duration.inMinutes < 10) {
+      return '${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds';
+    } else {
+      return '${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds';
+    }
   }
 
   @override
@@ -177,10 +220,20 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Resend',
-                    style: TextStyle(
+                  onPressed: countDownComplete
+                      ? () async {
+                          enteredOtp = await ref
+                              .read(authProvider.notifier)
+                              .getOtp(widget.phoneNo);
+                          duration = const Duration(minutes: 2);
+                          startTimer();
+                        }
+                      : null,
+                  child: Text(
+                    duration.inSeconds == 0
+                        ? 'Resend'
+                        : formatDuration(duration),
+                    style: const TextStyle(
                       inherit: true,
                       fontFamily: 'DMSans',
                       fontSize: 16,
@@ -190,6 +243,24 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                   ),
                 ),
               ],
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
+            },
+            child: const Text(
+              'Change mobile number',
+              style: TextStyle(
+                fontFamily: 'DMSans',
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
             ),
           ),
           const Spacer(),

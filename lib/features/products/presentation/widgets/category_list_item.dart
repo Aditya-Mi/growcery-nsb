@@ -35,9 +35,9 @@ class CategoryScreenItem extends StatelessWidget {
         ),
         Text(
           category.name,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'DMSans',
-            fontSize: 16,
+            fontSize: h * 0.0204,
             fontWeight: FontWeight.bold,
             color: dark,
           ),

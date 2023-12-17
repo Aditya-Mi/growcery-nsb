@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/cart/data/cart_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,30 +11,45 @@ class CartListItem extends ConsumerWidget {
     super.key,
     required this.cartItem,
   });
+  String extractQuantity(String inputString) {
+    RegExp regex = RegExp(r'\(([^)]+)\)');
+    RegExpMatch? match = regex.firstMatch(inputString);
+    return match != null ? match.group(1)?.trim() ?? '' : '';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     return Container(
-      height: h * .13,
+      height: h * .12,
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: 48,
-            height: 42,
-            child: Image.network(cartItem.itemDetails.image),
+          Container(
+            height: h * .10,
+            width: w * 0.19,
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: lightGrey,
+              ),
+              borderRadius: BorderRadius.circular(5),
+              image: DecorationImage(
+                image: NetworkImage(
+                  cartItem.itemDetails.image,
+                ),
+              ),
+            ),
           ),
           const SizedBox(
-            width: 20,
+            width: 10,
           ),
-          SizedBox(
-            width: 200,
+          Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -41,83 +57,104 @@ class CartListItem extends ConsumerWidget {
                   maxLines: 2,
                   style: TextStyle(
                     fontFamily: 'DMSans',
-                    fontSize: h * 0.0189,
+                    fontSize: h * 0.0159,
                     fontWeight: FontWeight.bold,
                     color: dark,
                   ),
                 ),
-                Text(
-                  '${cartItem.itemDetails.price}',
-                  style: TextStyle(
-                    fontFamily: 'DMSans',
-                    fontSize: h * 0.0189,
-                    fontWeight: FontWeight.bold,
-                    color: secondaryColor,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          extractQuantity(cartItem.itemDetails.description),
+                          style: TextStyle(
+                            fontFamily: 'DMSans',
+                            fontSize: h * 0.0139,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '\u{20B9}${cartItem.itemDetails.price}',
+                          style: TextStyle(
+                            fontFamily: 'DMSans',
+                            fontSize: h * 0.0159,
+                            fontWeight: FontWeight.bold,
+                            color: secondaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () async {
+                        final quantity = ref
+                            .read(cartItemsProvider.notifier)
+                            .getQuantity(cartItem.itemDetails.id);
+                        if (quantity == 1) {
+                          ref
+                              .read(cartItemsProvider.notifier)
+                              .deleteItemFromCart(cartItem.itemDetails.id);
+                        }
+                        ref
+                            .read(cartItemsProvider.notifier)
+                            .decreaseQuantityItem(cartItem.itemDetails.id);
+                      },
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: lightBg,
+                        ),
+                        alignment: Alignment.center,
+                        child: SvgPicture.asset(
+                          "assets/icons/minus.svg",
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '${cartItem.quantity}',
+                      style: const TextStyle(
+                        fontFamily: 'DMSans',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: dark,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await ref
+                            .read(cartItemsProvider.notifier)
+                            .increaseQuantityItem(cartItem.itemDetails.id);
+                      },
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: primaryColor,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ),
-          const Spacer(),
-          InkWell(
-            onTap: () async {
-              final quantity = ref
-                  .read(cartItemsProvider.notifier)
-                  .getQuantity(cartItem.itemDetails.id);
-              if (quantity == 1) {
-                await ref
-                    .read(cartItemsProvider.notifier)
-                    .deleteItemFromCart(cartItem.itemDetails.id);
-              }
-              await ref
-                  .read(cartItemsProvider.notifier)
-                  .decreaseQuantityItem(cartItem.itemDetails.id);
-            },
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: lightBg,
-              ),
-              alignment: Alignment.center,
-              child: const Icon(
-                Icons.minimize,
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Text(
-            '${cartItem.quantity}',
-            style: const TextStyle(
-              fontFamily: 'DMSans',
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: dark,
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          InkWell(
-            onTap: () async {
-              await ref
-                  .read(cartItemsProvider.notifier)
-                  .increaseQuantityItem(cartItem.itemDetails.id);
-            },
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: primaryColor,
-              ),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
             ),
           ),
         ],

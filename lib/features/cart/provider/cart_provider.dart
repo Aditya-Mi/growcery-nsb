@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/cart/data/cart_item.dart';
 import 'package:grocery_app/features/cart/repository/cart_repository.dart';
+import 'package:collection/collection.dart';
 
 final cartItemsProvider = AsyncNotifierProvider<CartNotifier, Cart>(
   () => CartNotifier(),
@@ -22,7 +23,8 @@ class CartNotifier extends AsyncNotifier<Cart> {
   Future<void> deleteItemFromCart(String id) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      return await _cartRepository.deleteItemFromCart(id);
+      Cart cart = await _cartRepository.deleteItemFromCart(id);
+      return cart;
     });
   }
 
@@ -61,5 +63,10 @@ class CartNotifier extends AsyncNotifier<Cart> {
 
   Future<Cart> getCart() async {
     return await _cartRepository.getCart();
+  }
+
+  Future<bool> placeOrder(String addressId) async {
+    final response = await _cartRepository.placeOrder(addressId);
+    return response;
   }
 }

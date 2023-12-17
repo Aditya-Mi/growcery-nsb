@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/otp_verification_screen.dart';
-import 'package:grocery_app/utils/snackbar.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -121,9 +120,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         setState(() {
                           isLoading = false;
                         });
-                        if (context.mounted) {
-                          Helper.showSnackbar(context, otp);
-                        }
                         if (context.mounted && otp != 'failure') {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(

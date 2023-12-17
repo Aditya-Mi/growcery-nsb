@@ -128,6 +128,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -163,6 +166,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       border: Border.all(
                         color: lightGrey,
                       ),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -196,6 +202,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -229,6 +238,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -262,6 +274,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -295,6 +310,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -328,6 +346,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -361,6 +382,9 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
+                      borderRadius: BorderRadius.circular(
+                        8,
+                      ),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -368,21 +392,6 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Field(field: 'Address type'),
-                        // TextFormField(
-                        //   initialValue: _addressType,
-                        //   decoration: CommonStyle.inputDecoration(
-                        //       hintText: "Select Address type"),
-                        //   enableSuggestions: false,
-                        //   validator: (value) {
-                        //     if (value == null || value.isEmpty) {
-                        //       return 'Cannot be empty';
-                        //     }
-                        //     return null;
-                        //   },
-                        //   onSaved: (value) {
-                        //     _addressType = value!;
-                        //   },
-                        // ),
                         SizedBox(
                           width: double.infinity,
                           child: DropdownButtonFormField<String>(

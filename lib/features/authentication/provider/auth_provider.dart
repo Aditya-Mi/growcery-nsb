@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String authenticationToken = 'AUTHENTICATION_TOKEN';
+const String mobileNo = 'PHONE_NUMBER';
 
 final sharedPreferenceProvider = Provider((ref) async {
   return await SharedPreferences.getInstance();
@@ -35,7 +36,19 @@ class AuthController extends StateNotifier<AsyncValue<dynamic>> {
       return false;
     }
     final prefs = await ref.watch(sharedPreferenceProvider);
-    prefs.setString(authenticationToken, response);
+    await prefs.setString(authenticationToken, response);
+    await prefs.setString(mobileNo, phoneNo);
+    return true;
+  }
+
+  Future<bool> logout() async {
+    final response = await ref.read(authRepositoryProvider).logout();
+    if (!response) {
+      return false;
+    }
+    final prefs = await ref.watch(sharedPreferenceProvider);
+    await prefs.setString(authenticationToken, '');
+    await prefs.setString(mobileNo, '');
     return true;
   }
 }
@@ -43,4 +56,9 @@ class AuthController extends StateNotifier<AsyncValue<dynamic>> {
 final authTokenProvider = FutureProvider<String>((ref) async {
   final prefs = await ref.watch(sharedPreferenceProvider);
   return prefs.getString(authenticationToken)!;
+});
+
+final mobileNoProvider = FutureProvider<String>((ref) async {
+  final prefs = await ref.watch(sharedPreferenceProvider);
+  return prefs.getString(mobileNo)!;
 });

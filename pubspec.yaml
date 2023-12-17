@@ -41,6 +41,9 @@ dependencies:
   riverpod: ^2.4.4
   flutter_riverpod: ^2.3.7
   flutter_svg_provider: ^1.0.6
+  shimmer: ^3.0.0
+  connectivity_plus: ^4.0.2
+  internet_connection_checker: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,9 @@ flutter:
   assets:
     - assets/images/onboarding.png
     - assets/images/bell_pepper.png
+    - assets/images/error_image.png
+    - assets/images/empty_cart_image.png
+    - assets/images/order_placed_image.png
     - assets/icons/home.svg
     - assets/icons/bag.svg
     - assets/icons/profile.svg
@@ -80,6 +86,7 @@ flutter:
     - assets/icons/calendar.svg
     - assets/icons/organic.svg
     - assets/icons/sort.svg
+    - assets/icons/minus.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

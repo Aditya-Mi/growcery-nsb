@@ -29,7 +29,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 20,
-              childAspectRatio: 0.95168224299,
+              childAspectRatio: 0.91168224299,
             ),
             itemCount: data.length,
             itemBuilder: (context, index) {
