@@ -67,7 +67,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const Text(
                               'Welcome',
                               style: TextStyle(
-                                fontSize: 34,
+                                fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'DMSans',
                                 color: Colors.black,

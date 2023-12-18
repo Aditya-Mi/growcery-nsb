@@ -442,8 +442,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 ),
               ),
         error: (error, stackTrace) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/error_image.png',
+                ),
+              ),
+            ),
           );
         },
         loading: () {

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/presentation/address_list_item.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 
 class AddressScreen extends ConsumerStatefulWidget {
   const AddressScreen({super.key});
@@ -12,6 +13,23 @@ class AddressScreen extends ConsumerStatefulWidget {
 }
 
 class _AddressScreenState extends ConsumerState<AddressScreen> {
+  Future<void> checkInternetConnection() async {
+    final isInternetAvailable = await ref.read(networkProvider.future);
+    if (!isInternetAvailable && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection.'),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    checkInternetConnection();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final addressData = ref.watch(addressProvider);

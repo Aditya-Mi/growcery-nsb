@@ -97,13 +97,14 @@ class CartListItem extends ConsumerWidget {
                             .read(cartItemsProvider.notifier)
                             .getQuantity(cartItem.itemDetails.id);
                         if (quantity == 1) {
-                          ref
+                          await ref
                               .read(cartItemsProvider.notifier)
                               .deleteItemFromCart(cartItem.itemDetails.id);
+                        } else {
+                          await ref
+                              .read(cartItemsProvider.notifier)
+                              .decreaseQuantityItem(cartItem.itemDetails.id);
                         }
-                        ref
-                            .read(cartItemsProvider.notifier)
-                            .decreaseQuantityItem(cartItem.itemDetails.id);
                       },
                       child: Container(
                         width: 32,

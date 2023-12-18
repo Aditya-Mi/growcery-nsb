@@ -5,6 +5,7 @@ import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 
 class AddressListItem extends ConsumerStatefulWidget {
   final Address address;
@@ -18,6 +19,18 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<bool> checkInternetConnection() async {
+    final isInternetAvailable = await ref.read(networkProvider.future);
+    if (!isInternetAvailable && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection.'),
+        ),
+      );
+    }
+    return isInternetAvailable;
   }
 
   @override
@@ -71,9 +84,13 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          await ref
-                              .read(addressProvider.notifier)
-                              .deleteAddress(widget.address.id!);
+                          bool isInternetAvailable =
+                              await checkInternetConnection();
+                          if (isInternetAvailable) {
+                            await ref
+                                .read(addressProvider.notifier)
+                                .deleteAddress(widget.address.id!);
+                          }
                         },
                         icon: const Icon(Icons.delete_rounded),
                         padding: const EdgeInsets.all(0),

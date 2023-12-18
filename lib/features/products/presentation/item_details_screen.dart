@@ -136,9 +136,11 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                             InkWell(
                               onTap: () async {
                                 if (quantity == 1) {
-                                  return;
+                                  await deleteItemFromCart(widget.product.id);
+                                } else {
+                                  await decreaseQuantityInCart(
+                                      widget.product.id);
                                 }
-                                await decreaseQuantityInCart(widget.product.id);
                               },
                               child: Container(
                                 width: 40,

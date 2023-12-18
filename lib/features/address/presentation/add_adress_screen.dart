@@ -4,6 +4,7 @@ import 'package:grocery_app/common_widgets/custom_button.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/utils/helper_functions.dart';
 
 class EditAddress extends ConsumerStatefulWidget {
@@ -42,6 +43,18 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       _enteredAlternateNo = widget.address!.alternativePhone;
       _addressType = widget.address!.addressType;
     }
+  }
+
+  Future<bool> checkInternetConnection() async {
+    final isInternetAvailable = await ref.read(networkProvider.future);
+    if (!isInternetAvailable && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection.'),
+        ),
+      );
+    }
+    return isInternetAvailable;
   }
 
   Future<void> _updateAddress() async {
@@ -417,7 +430,10 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomButton(
         function: () async {
-          await _updateAddress();
+          bool isInternet = await checkInternetConnection();
+          if (isInternet) {
+            await _updateAddress();
+          }
         },
         title: 'Save Address',
       ),
