@@ -139,9 +139,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 height: double.infinity,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image:
-                            AssetImage('assets/images/empty_cart_image.png'))),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/empty_cart_image.png'),
+                  ),
+                ),
               )
             : SizedBox(
                 height: double.infinity,
@@ -385,55 +386,59 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               height: 10,
                             ),
                             CustomButton(
-                                title: 'Place order',
-                                function: () async {
-                                  if (_selectedAddress == null) {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          shape: const BeveledRectangleBorder(),
-                                          title: const Text(
-                                            'Warning!',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                              title: 'Place order',
+                              function: () async {
+                                if (_selectedAddress == null) {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: const BeveledRectangleBorder(),
+                                        title: const Text(
+                                          'Warning!',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        content: const Text(
+                                          'Please add a address before ordering.',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Ok',
+                                              style: TextStyle(fontSize: 16),
                                             ),
                                           ),
-                                          content: const Text(
-                                            'Please add a address before ordering.',
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text(
-                                                'Ok',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    return;
-                                  }
-                                  final success = await ref
-                                      .read(cartItemsProvider.notifier)
-                                      .placeOrder(_selectedAddress!.id!);
-                                  if (success && context.mounted) {
-                                    Helper.showSnackbar(
-                                      context,
-                                      "Order places successfully",
-                                    );
-                                  } else {
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  return;
+                                }
+                                await checkInternetConnection();
+                                final success = await ref
+                                    .read(cartItemsProvider.notifier)
+                                    .placeOrder(_selectedAddress!.id!);
+                                if (success && context.mounted) {
+                                  Helper.showSnackbar(
+                                    context,
+                                    "Order places successfully",
+                                  );
+                                } else {
+                                  if (context.mounted) {
                                     Helper.showSnackbar(
                                         context, 'Try again later');
                                   }
-                                })
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),

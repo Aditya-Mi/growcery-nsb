@@ -57,7 +57,6 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         });
       } else {
         duration = Duration(seconds: seconds);
-        print(duration);
       }
     });
   }

@@ -22,7 +22,7 @@ class CartListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       height: h * .12,
       width: double.infinity,
       child: Row(
@@ -172,7 +172,7 @@ class CartListItemShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
       height: h * .12,
       width: double.infinity,
       child: Row(

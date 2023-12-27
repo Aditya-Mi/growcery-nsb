@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
@@ -185,8 +186,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
                     loading: () {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Row(
+                        children: [
+                          ShimmerWidget.rectangular(width: w * 0.5, height: 30),
+                          const Spacer(),
+                          ShimmerWidget.circular(
+                            width: w * 0.3,
+                            height: 40,
+                            shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -254,7 +267,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 categories.when(
                   data: (data) {
-                    return Expanded(
+                    print(h);
+                    return SizedBox(
+                      width: double.infinity,
+                      height: h * 0.45,
                       child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -297,7 +313,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     );
                   },
-                  loading: () => Expanded(
+                  loading: () => SizedBox(
+                    width: double.infinity,
+                    height: h * 0.45,
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -325,7 +343,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                 ),
                 Container(
-                  height: 220,
+                  height: h * 0.2528,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: products.when(
                     data: (data) {
@@ -352,19 +370,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
                     loading: () {
-                      return GridView.builder(
-                        scrollDirection: Axis.horizontal,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          childAspectRatio: 1.3,
+                      return Container(
+                        height: h * 0.2528,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 20,
+                            childAspectRatio: 1.3,
+                          ),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return const GroceryShimmerListItem();
+                          },
                         ),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return const GroceryShimmerListItem();
-                        },
                       );
                     },
                   ),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
-import 'package:grocery_app/features/cart/provider/cart_provider.dart';
 import 'package:grocery_app/features/products/data/product.dart';
 import 'package:grocery_app/features/products/presentation/item_details_screen.dart';
 
@@ -24,7 +22,6 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
 
   @override
   Widget build(BuildContext context) {
-    final cartItem = ref.read(cartItemsProvider);
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(

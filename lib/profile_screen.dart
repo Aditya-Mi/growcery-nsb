@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/presentation/address_screen.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';

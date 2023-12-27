@@ -52,13 +52,11 @@ class CartRepository {
   }
 
   Future<Cart> deleteItemFromCart(String id) async {
-    print('delete function called in repo');
     try {
       var u = Uri.parse('$url/deleteitem/$id');
       var response = await http.delete(u, headers: await _getHeader());
       var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        print(response.statusCode);
         return Cart.fromJson(result);
       }
       throw Exception(response.reasonPhrase);
@@ -101,8 +99,6 @@ class CartRepository {
       var body = jsonEncode({"addressId": addressId});
       var response =
           await http.post(u, headers: await _getHeader(), body: body);
-      var result = jsonDecode(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         return true;
       }
