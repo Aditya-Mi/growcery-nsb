@@ -267,7 +267,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 categories.when(
                   data: (data) {
-                    print(h);
                     return SizedBox(
                       width: double.infinity,
                       height: h * 0.45,

@@ -34,10 +34,13 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   Timer? countdownTimer;
   Duration duration = const Duration(minutes: 2);
   late String enteredOtp;
+  late String receivedOtp;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    receivedOtp = widget.otp;
     startTimer();
   }
 
@@ -164,11 +167,17 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                       controller6.text;
                   bool verfiy = ref
                       .read(authProvider.notifier)
-                      .verify(widget.otp, enteredOtp);
+                      .verify(receivedOtp, enteredOtp);
                   if (verfiy) {
+                    setState(() {
+                      isLoading = true;
+                    });
                     bool success = await ref
                         .read(authProvider.notifier)
                         .login(widget.phoneNo, enteredOtp);
+                    setState(() {
+                      isLoading = false;
+                    });
                     if (success && context.mounted) {
                       Helper.showSnackbar(context, 'Logged in successfully');
                       Navigator.of(context).pushReplacement(
@@ -189,16 +198,20 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                   Helper.showSnackbar(context, 'Please fill all fields');
                 }
               },
-              child: const Text(
-                'Continue',
-                style: TextStyle(
-                  inherit: true,
-                  fontFamily: 'DMSans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              child: isLoading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      'Continue',
+                      style: TextStyle(
+                        inherit: true,
+                        fontFamily: 'DMSans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ),
           const SizedBox(
@@ -221,7 +234,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 TextButton(
                   onPressed: countDownComplete
                       ? () async {
-                          enteredOtp = await ref
+                          receivedOtp = await ref
                               .read(authProvider.notifier)
                               .getOtp(widget.phoneNo);
                           duration = const Duration(minutes: 2);

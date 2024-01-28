@@ -429,7 +429,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 if (success && context.mounted) {
                                   Helper.showSnackbar(
                                     context,
-                                    "Order places successfully",
+                                    "Order placed successfully",
                                   );
                                 } else {
                                   if (context.mounted) {

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/otp_verification_screen.dart';
+import 'package:grocery_app/utils/helper_functions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -38,6 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(
               height: 16,
@@ -107,13 +109,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: isLoading
                     ? null
                     : () async {
+                        if (phoneNoController.text.isEmpty ||
+                            phoneNoController.text.length < 10) {
+                          Helper.showSnackbar(
+                              context, 'Please enter a valid phone no.');
+                          return;
+                        }
+
                         setState(() {
                           isLoading = true;
                         });
-                        if (phoneNoController.text.isEmpty ||
-                            phoneNoController.text.length < 10) {
-                          return;
-                        }
+
                         var otp = await ref
                             .read(authProvider.notifier)
                             .getOtp(phoneNoController.text);
@@ -132,7 +138,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         }
                       },
                 child: isLoading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
                     : const Text(
                         'Continue',
                         style: TextStyle(

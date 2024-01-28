@@ -70,7 +70,6 @@ class HomeCategoryShimmerListItem extends StatelessWidget {
             width: h * 0.089,
             height: w * 0.194,
           ),
-          ShimmerWidget.rectangular(width: w * 0.2, height: h * 0.01658)
         ],
       ),
     );

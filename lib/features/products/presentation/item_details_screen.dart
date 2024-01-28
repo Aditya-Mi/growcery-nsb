@@ -56,7 +56,6 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
         data: (data) {
           final isInCart =
               ref.read(cartItemsProvider.notifier).isInCart(widget.product.id);
-          print('$isInCart');
           int quantity = 0;
           if (isInCart) {
             final cartItem = data.cartItem.firstWhere(
@@ -74,7 +73,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                     ClipPath(
                       clipper: CustomClipPath(),
                       child: Container(
-                        height: h * 0.47549763033,
+                        height: h * 0.50549763033,
                         width: double.infinity,
                         color: Colors.white,
                       ),
@@ -123,7 +122,7 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                       Row(
                         children: [
                           Text(
-                            '${extractQuantity(widget.product.description)}, \u{20B9}${widget.product.price}',
+                            '\u{20B9}${widget.product.price}, ${extractQuantity(widget.product.description)}',
                             style: TextStyle(
                               fontFamily: 'DMSans',
                               fontSize: h * 0.0236,

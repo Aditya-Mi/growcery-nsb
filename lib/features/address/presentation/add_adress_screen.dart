@@ -110,6 +110,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+    final heightOfContainer = h * 0.09;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
@@ -137,7 +138,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
@@ -173,7 +174,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
@@ -211,7 +212,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
@@ -247,7 +248,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
@@ -283,7 +284,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
@@ -319,7 +320,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
@@ -355,7 +356,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Container(
-                    height: h * 0.08,
+                    height: heightOfContainer,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: lightGrey),
