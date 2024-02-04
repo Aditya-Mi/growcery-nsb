@@ -80,7 +80,7 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
             left: 10,
             bottom: 20,
             child: Text(
-              '${extractQuantity(widget.product.description)}, \u{20B9}${widget.product.price}',
+              '\u{20B9}${widget.product.price}, ${extractQuantity(widget.product.description)}',
               style: const TextStyle(
                 fontFamily: 'DMSans',
                 fontSize: 16,

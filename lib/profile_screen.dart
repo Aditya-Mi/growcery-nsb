@@ -133,7 +133,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   height: h * 0.044,
                 ),
                 ProfileListItem(
-                  title: 'My orders',
+                  title: 'My Orders',
                   function: () {},
                   icon: Icons.shopping_bag_rounded,
                 ),

@@ -136,7 +136,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
     final products = ref.watch(productProvider);
     final filters = ref.watch(filterProvider);
     final categories = ref.read(categoryProvider).value;
-    final categoryList = categories!.map((category) => category.name).toList();
+
     return WillPopScope(
       onWillPop: () async {
         ref.read(filterProvider.notifier).update(
@@ -167,6 +167,8 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
         ),
         body: products.when(
           data: (data) {
+            final categoryList =
+                categories!.map((category) => category.name).toList();
             List<Product> filteredList = data;
             if (filters.category != null) {
               filteredList = filteredList

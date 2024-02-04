@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
-import 'package:grocery_app/features/cart/data/cart_item.dart';
+import 'package:grocery_app/features/cart/data/cart.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

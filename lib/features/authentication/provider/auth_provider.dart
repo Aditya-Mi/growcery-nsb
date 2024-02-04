@@ -1,4 +1,5 @@
 import 'package:grocery_app/features/authentication/repository/auth_repository.dart';
+import 'package:grocery_app/main.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,8 +48,10 @@ class AuthController extends StateNotifier<AsyncValue<dynamic>> {
       return false;
     }
     final prefs = await ref.watch(sharedPreferenceProvider);
-    await prefs.setString(authenticationToken, '');
-    await prefs.setString(mobileNo, '');
+    // await prefs.setString(authenticationToken, '');
+    // await prefs.setString(mobileNo, '');
+    await prefs.clear();
+    await prefs.setBool('onBoarding', false);
     return true;
   }
 }

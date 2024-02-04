@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grocery_app/features/cart/data/cart_item.dart';
+import 'package:grocery_app/features/cart/data/cart.dart';
 import 'package:grocery_app/features/cart/repository/cart_repository.dart';
 
 final cartItemsProvider = AsyncNotifierProvider<CartNotifier, Cart>(

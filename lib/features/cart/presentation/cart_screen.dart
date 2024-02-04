@@ -7,10 +7,12 @@ import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/features/cart/data/cart.dart';
 import 'package:grocery_app/features/cart/presentation/widgets/cart_list_item.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
 import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/utils/helper_functions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -37,6 +39,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         ),
       );
     }
+  }
+
+  String generateOrderSummary(Address address, Cart cart) {
+    String orderSummary = """📊 Order Summary:
+Total Items: ${cart.totalItems}
+Total Price: *₹${cart.totalPrice}*
+                          """;
+    for (int i = 0; i < cart.cartItem.length; i++) {
+      CartItem item = cart.cartItem[i];
+      orderSummary +=
+          "\n*${i + 1}. ${item.itemDetails.name} -  ${item.quantity} x ₹${item.itemDetails.price} = ₹${item.price}*";
+    }
+    orderSummary += """\n
+📍 Delivery Address:
+Name:${address.fullName}
+Mobile Number: ${address.alternativePhone}
+Locality: ${address.locality}
+Landmark: ${address.landmark}
+State: ${address.state}
+Pincode: ${address.pincode}
+🚚 Your order is confirmed and will be delivered soon. Thank you for shopping with us! 🙏""";
+    return orderSummary;
   }
 
   void bottomSheet(BuildContext context, List<Address> addresses) {
@@ -423,9 +447,15 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   return;
                                 }
                                 await checkInternetConnection();
-                                final success = await ref
-                                    .read(cartItemsProvider.notifier)
-                                    .placeOrder(_selectedAddress!.id!);
+                                const String number = '917619785845';
+                                final String text = generateOrderSummary(
+                                    _selectedAddress!, data);
+                                final Uri url = Uri.parse(
+                                    "https://wa.me/$number?text=$text");
+                                // final success = await ref
+                                //     .read(cartItemsProvider.notifier)
+                                //     .placeOrder(_selectedAddress!.id!);
+                                final success = await launchUrl(url);
                                 if (success && context.mounted) {
                                   Helper.showSnackbar(
                                     context,

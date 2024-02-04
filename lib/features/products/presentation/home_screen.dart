@@ -29,7 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> checkInternetConnection() async {
-    final isInternetAvailable = await ref.read(networkProvider.future);
+    final isInternetAvailable = await ref.refresh(networkProvider.future);
     if (!isInternetAvailable && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -306,9 +306,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     );
                   },
                   error: (error, stackTrace) {
-                    return Center(
+                    debugPrint(stackTrace.toString());
+                    return const Center(
                       child: Text(
-                        error.toString(),
+                        'Something went wrong. Please try again later.',
                       ),
                     );
                   },
@@ -364,8 +365,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
                     error: (error, stackTrace) {
-                      return Center(
-                        child: Text(error.toString()),
+                      debugPrint(stackTrace.toString());
+                      return const Center(
+                        child: Text(
+                          'Something went wrong. Please try again later.',
+                        ),
                       );
                     },
                     loading: () {

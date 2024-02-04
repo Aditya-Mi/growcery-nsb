@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/main_screen.dart';
 import 'package:grocery_app/utils/helper_functions.dart';
 
@@ -169,6 +170,16 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                       .read(authProvider.notifier)
                       .verify(receivedOtp, enteredOtp);
                   if (verfiy) {
+                    final isInternetAvailable =
+                        await ref.refresh(networkProvider.future);
+                    if (!isInternetAvailable && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No internet connection.'),
+                        ),
+                      );
+                      return;
+                    }
                     setState(() {
                       isLoading = true;
                     });

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/otp_verification_screen.dart';
+import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/utils/helper_functions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -116,10 +117,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           return;
                         }
 
+                        final isInternetAvailable =
+                            await ref.refresh(networkProvider.future);
+                        if (!isInternetAvailable && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('No internet connection.'),
+                            ),
+                          );
+                          return;
+                        }
                         setState(() {
                           isLoading = true;
                         });
-
                         var otp = await ref
                             .read(authProvider.notifier)
                             .getOtp(phoneNoController.text);
