@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/common_widgets/custom_button.dart';
+import 'package:grocery_app/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
@@ -410,7 +411,8 @@ Pincode: ${address.pincode}
                               height: 10,
                             ),
                             CustomButton(
-                              title: 'Place order',
+                              child:
+                                  const CustomButtonText(title: 'Place order'),
                               function: () async {
                                 if (_selectedAddress == null) {
                                   showDialog(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/common_widgets/custom_button.dart';
+import 'package:grocery_app/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
@@ -216,13 +217,14 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                 const Spacer(),
                 isInCart
                     ? CustomButton(
-                        title: 'Remove from cart',
+                        child:
+                            const CustomButtonText(title: 'Remove from cart'),
                         function: () async {
                           await deleteItemFromCart(widget.product.id);
                         },
                       )
                     : CustomButton(
-                        title: 'Add to cart',
+                        child: const CustomButtonText(title: 'Add to cart'),
                         function: () async {
                           await addItemToCart(widget.product.id);
                         },

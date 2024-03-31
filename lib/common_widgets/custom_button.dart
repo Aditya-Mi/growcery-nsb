@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
-  final String title;
-  final void Function() function;
-  const CustomButton({super.key, required this.title, required this.function});
+  final Widget child;
+  final void Function()? function;
+  const CustomButton({super.key, required this.child, required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +20,7 @@ class CustomButton extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(vertical: 15),
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
-              inherit: true,
-              fontFamily: 'DMSans',
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
-        ),
+        child: child,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/common_widgets/custom_button.dart';
+import 'package:grocery_app/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -436,7 +437,7 @@ class _EditAddressState extends ConsumerState<EditAddress> {
             await _updateAddress();
           }
         },
-        title: 'Save Address',
+        child: const CustomButtonText(title: 'Save Address'),
       ),
     );
   }

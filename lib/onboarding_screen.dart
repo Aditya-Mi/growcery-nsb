@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:grocery_app/common_widgets/custom_button.dart';
+import 'package:grocery_app/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,16 +35,17 @@ class OnBoardingScreen extends StatelessWidget {
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Spacer(),
                 Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(5),
                   decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: Svg('assets/images/logo.svg'),
-                    ),
-                  ),
+                      shape: BoxShape.circle, color: Colors.white),
+                  child: Image.asset('assets/images/logo.png'),
+                ),
+                const SizedBox(
+                  height: 32,
                 ),
                 const SizedBox(
                   width: 318,
@@ -72,39 +74,23 @@ class OnBoardingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    fixedSize: const Size(190, 53),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 70, vertical: 40),
+                  child: CustomButton(
+                    child: const CustomButtonText(title: 'Shop now'),
+                    function: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('onBoarding', false);
+                      if (context.mounted) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      }
+                    },
                   ),
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setBool('onBoarding', false);
-                    if (context.mounted) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text(
-                    'Shop now',
-                    style: TextStyle(
-                        inherit: true,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-                const SizedBox(
-                  height: 40,
                 ),
                 Image.asset(
                   'assets/images/onboarding.png',

@@ -52,7 +52,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                backgroundColor: lightBg,
+                backgroundColor: Colors.white,
                 elevation: 0.0,
                 floating: false,
                 expandedHeight: 80,
@@ -84,7 +84,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
                               ),
-                              icon: SvgPicture.asset('assets/icons/pin.svg'),
+                              icon: SvgPicture.asset(
+                                'assets/icons/pin.svg',
+                                color: primaryColor,
+                              ),
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -124,7 +127,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: 'DMSans',
                                         color: Colors.black,
                                       ),
                                       maxLines: 1,
@@ -135,7 +137,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: 'DMSans',
                                         color: grey,
                                       ),
                                       maxLines: 2,
@@ -168,7 +169,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   'Add address',
                                   style: TextStyle(
                                     inherit: true,
-                                    fontFamily: 'DMSans',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: dark,
@@ -208,7 +208,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               SliverAppBar(
                 scrolledUnderElevation: 0.0,
                 pinned: true,
-                backgroundColor: lightBg,
+                backgroundColor: Colors.white,
                 elevation: 0.0,
                 bottom: const PreferredSize(
                   preferredSize: Size.fromHeight(10),
@@ -261,7 +261,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       fontSize: 18,
                       color: dark,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'DMSans',
                     ),
                   ),
                 ),

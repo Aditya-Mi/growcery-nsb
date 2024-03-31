@@ -39,8 +39,8 @@ class MyApp extends ConsumerWidget {
       home: onBoarding! == true
           ? const OnBoardingScreen()
           : token != ''
-              ? const OnBoardingScreen()
-              : const OnBoardingScreen(),
+              ? const LoginScreen()
+              : const LoginScreen(),
     );
   }
 }
