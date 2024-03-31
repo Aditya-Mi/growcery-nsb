@@ -74,6 +74,7 @@ flutter:
     - assets/images/error_image.png
     - assets/images/empty_cart_image.png
     - assets/images/order_placed_image.png
+    - assets/images/logo.svg
     - assets/icons/home.svg
     - assets/icons/bag.svg
     - assets/icons/profile.svg

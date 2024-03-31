@@ -33,13 +33,14 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'DMSans',
         useMaterial3: true,
       ),
       home: onBoarding! == true
           ? const OnBoardingScreen()
           : token != ''
-              ? const MainScreen()
-              : const LoginScreen(),
+              ? const OnBoardingScreen()
+              : const OnBoardingScreen(),
     );
   }
 }
