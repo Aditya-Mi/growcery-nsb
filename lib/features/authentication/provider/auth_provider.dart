@@ -1,5 +1,4 @@
 import 'package:grocery_app/features/authentication/repository/auth_repository.dart';
-import 'package:grocery_app/main.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
