@@ -40,7 +40,6 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
                           category: data[index].name,
                           priceSort: state.priceSort,
                           ratingSort: state.ratingSort,
-                          isVeg: state.isVeg,
                         ),
                       );
                   Navigator.of(context).push(

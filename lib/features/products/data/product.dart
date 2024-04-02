@@ -5,7 +5,8 @@ class Product {
   String name;
   String description;
   int price;
-  bool isVeg;
+  int discountedPrice;
+  String quantity;
   Category category;
   bool inStock;
   String image;
@@ -16,7 +17,8 @@ class Product {
     required this.name,
     required this.description,
     required this.price,
-    required this.isVeg,
+    required this.discountedPrice,
+    required this.quantity,
     required this.category,
     required this.inStock,
     required this.image,
@@ -29,7 +31,8 @@ class Product {
       name: json['name'],
       description: json['description'],
       price: json['price'],
-      isVeg: json['isVeg'],
+      discountedPrice: json['discountedPrice'],
+      quantity: json['quantity'],
       category: Category.fromJson(json['category']),
       inStock: json['inStock'],
       image: json['image'],
@@ -43,7 +46,8 @@ class Product {
       'name': name,
       'description': description,
       'price': price,
-      'isVeg': isVeg,
+      'discountedPrice': discountedPrice,
+      'quantity': quantity,
       'category': category.toJson(),
       'inStock': inStock,
       'image': image,

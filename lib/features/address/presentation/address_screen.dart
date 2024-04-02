@@ -35,17 +35,10 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
     final addressData = ref.watch(addressProvider);
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,
         title: const Text(
           'Shipping address',
-          style: TextStyle(
-              fontFamily: 'Merriweather',
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 16),
         ),
-        centerTitle: true,
       ),
       body: addressData.when(
         data: (data) {

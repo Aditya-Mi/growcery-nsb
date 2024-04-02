@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/data/product.dart';
-import 'package:grocery_app/features/products/presentation/widgets/grocery_item.dart';
+import 'package:grocery_app/features/products/presentation/widgets/item_screen_item.dart';
 import 'package:grocery_app/features/products/provider/product_provider.dart';
 
 class ItemsScreen extends ConsumerStatefulWidget {
@@ -71,7 +71,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           category: null,
                           priceSort: null,
                           ratingSort: null,
-                          isVeg: null,
                         ),
                       );
                   setState(() {
@@ -92,7 +91,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           category: state.category,
                           priceSort: SortState.asc,
                           ratingSort: state.ratingSort,
-                          isVeg: state.isVeg,
                         ),
                       );
                   setState(() {
@@ -113,7 +111,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           category: state.category,
                           priceSort: SortState.desc,
                           ratingSort: state.ratingSort,
-                          isVeg: state.isVeg,
                         ),
                       );
                   setState(() {
@@ -144,26 +141,39 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                 category: null,
                 priceSort: null,
                 ratingSort: null,
-                isVeg: null,
               ),
             );
         Navigator.of(context).pop(false);
         return false;
       },
       child: Scaffold(
+        backgroundColor: stroke,
         appBar: AppBar(
-          title: const Text(
-            'Items',
-            style: TextStyle(
-              fontFamily: 'DMSans',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: dark,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: IconButton.styleFrom(backgroundColor: Colors.white),
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 16,
             ),
           ),
-          centerTitle: true,
-          elevation: 0.0,
-          scrolledUnderElevation: 0.0,
+          title: const Text(
+            'Items',
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: IconButton.styleFrom(backgroundColor: Colors.white),
+              icon: const Icon(
+                Icons.search,
+              ),
+            )
+          ],
+          backgroundColor: stroke,
         ),
         body: products.when(
           data: (data) {
@@ -175,12 +185,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                   .where((product) => product.category.name == filters.category)
                   .toList();
             }
-            if (filters.isVeg != null) {
-              if (filters.isVeg == true) {
-                filteredList =
-                    filteredList.where((product) => product.isVeg).toList();
-              }
-            }
+
             if (filters.priceSort != null) {
               if (filters.priceSort == SortState.asc) {
                 filteredList.sort((a, b) => a.price.compareTo(b.price));
@@ -191,7 +196,9 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: const EdgeInsets.all(
+                    20,
+                  ),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -202,7 +209,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: lightPrimary),
+                            border: Border.all(color: primaryColor),
                           ),
                           child: Row(
                             children: [
@@ -237,7 +244,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: lightPrimary),
+                            border: Border.all(color: primaryColor),
                           ),
                           child: DropdownButton<String>(
                             isExpanded: true,
@@ -258,7 +265,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                                         category: value,
                                         priceSort: state.priceSort,
                                         ratingSort: state.ratingSort,
-                                        isVeg: state.isVeg,
                                       ),
                                     );
                               },
@@ -269,53 +275,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                       ),
                       const SizedBox(
                         width: 15,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (filters.isVeg == null || filters.isVeg == false) {
-                            ref.read(filterProvider.notifier).update(
-                                  (state) => Filters(
-                                    category: state.category,
-                                    priceSort: state.priceSort,
-                                    ratingSort: state.ratingSort,
-                                    isVeg: true,
-                                  ),
-                                );
-                          } else {
-                            ref.read(filterProvider.notifier).update(
-                                  (state) => Filters(
-                                    category: state.category,
-                                    priceSort: state.priceSort,
-                                    ratingSort: state.ratingSort,
-                                    isVeg: null,
-                                  ),
-                                );
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: lightPrimary),
-                              color: filters.isVeg == true
-                                  ? lightPrimary
-                                  : Colors.white),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Veg',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: filters.isVeg != null &&
-                                          filters.isVeg == true
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -329,17 +288,18 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                       )
                     : Expanded(
                         child: GridView.builder(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.only(
+                              right: 20, left: 20, bottom: 20),
                           itemCount: filteredList.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: h * 0.0255,
                             crossAxisSpacing: w * 0.055,
-                            childAspectRatio: 0.76168224299,
+                            childAspectRatio: 0.61168224299,
                           ),
                           itemBuilder: (context, index) {
-                            return GroceryItem(
+                            return ItemScreenItem(
                               product: filteredList[index],
                             );
                           },

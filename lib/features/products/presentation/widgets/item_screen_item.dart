@@ -5,15 +5,15 @@ import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/products/data/product.dart';
 import 'package:grocery_app/features/products/presentation/item_details_screen.dart';
 
-class GroceryItem extends ConsumerStatefulWidget {
+class ItemScreenItem extends ConsumerStatefulWidget {
   final Product product;
-  const GroceryItem({super.key, required this.product});
+  const ItemScreenItem({super.key, required this.product});
 
   @override
-  ConsumerState<GroceryItem> createState() => _GroceryItemState();
+  ConsumerState<ItemScreenItem> createState() => _ItemScreenItemState();
 }
 
-class _GroceryItemState extends ConsumerState<GroceryItem> {
+class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,7 +26,12 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
           ),
         );
       },
-      child: SizedBox(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
         width: 165,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -35,12 +40,6 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
             Container(
               height: 141,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 0.2,
-                ),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(

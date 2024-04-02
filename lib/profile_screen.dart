@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/address/presentation/address_screen.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';

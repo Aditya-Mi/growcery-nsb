@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:grocery_app/common_widgets/custom_button.dart';
-import 'package:grocery_app/common_widgets/custom_button_text.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/common_widgets/custom_button.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

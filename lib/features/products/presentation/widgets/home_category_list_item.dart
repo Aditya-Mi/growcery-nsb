@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/common_widgets/shimmer_widget.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/common_widgets/shimmer_widget.dart';
+import 'package:grocery_app/core/constants/colors.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/products/data/category.dart';
 
 class HomeCategoryListItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class HomeCategoryListItem extends StatelessWidget {
             width: h * 0.089,
             height: w * 0.194,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(10),
               color: lightBg,
               image: DecorationImage(
                 fit: BoxFit.cover,
@@ -37,11 +38,8 @@ class HomeCategoryListItem extends StatelessWidget {
           ),
           Text(
             category.name,
-            style: TextStyle(
-              fontFamily: 'DMSans',
+            style: CustomTextStyle.mediumTextStyleDark(
               fontSize: h * 0.01658,
-              fontWeight: FontWeight.w500,
-              color: dark,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

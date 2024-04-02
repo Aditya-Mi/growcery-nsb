@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final Widget child;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 
 class HomeHeading extends StatelessWidget {
   final String heading;
-  final VoidCallback function;
-  const HomeHeading({super.key, required this.heading, required this.function});
+  final VoidCallback? function;
+  const HomeHeading({super.key, required this.heading, this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -15,27 +15,20 @@ class HomeHeading extends StatelessWidget {
         children: [
           Text(
             heading,
-            style: const TextStyle(
-              fontSize: 18,
-              color: dark,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'DMSans',
-            ),
+            style: CustomTextStyle.boldTextStyleDark(fontSize: 18),
           ),
           const Spacer(),
-          TextButton(
-            onPressed: function,
-            child: const Text(
-              'See all',
-              style: TextStyle(
-                inherit: true,
-                fontFamily: 'DMSans',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: primaryColor,
-              ),
-            ),
-          ),
+          function != null
+              ? TextButton(
+                  onPressed: function,
+                  child: Text(
+                    'See all',
+                    style: CustomTextStyle.mediumTextStylePrimaryColor(
+                            fontSize: 18)
+                        .copyWith(inherit: true),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/colors.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/products/data/category.dart';
 
 class CategoryScreenItem extends StatelessWidget {
@@ -35,12 +36,7 @@ class CategoryScreenItem extends StatelessWidget {
         ),
         Text(
           category.name,
-          style: TextStyle(
-            fontFamily: 'DMSans',
-            fontSize: h * 0.0204,
-            fontWeight: FontWeight.bold,
-            color: dark,
-          ),
+          style: CustomTextStyle.mediumTextStyleDark(fontSize: h * 0.0204),
         )
       ],
     );

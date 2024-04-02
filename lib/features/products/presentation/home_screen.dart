@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grocery_app/common_widgets/shimmer_widget.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/common_widgets/shimmer_widget.dart';
+import 'package:grocery_app/core/constants/colors.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -46,99 +47,95 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final categories = ref.watch(categoryProvider);
     final products = ref.watch(productProvider);
     final addresses = ref.watch(addressProvider);
-    return SafeArea(
-      child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                floating: false,
-                expandedHeight: 80,
-                title: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: addresses.when(
-                    data: (data) {
-                      if (data.isEmpty) {
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Welcome',
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'DMSans',
-                                color: Colors.black,
-                              ),
-                            ),
-                            const Spacer(),
-                            TextButton.icon(
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                              ),
-                              icon: SvgPicture.asset(
-                                'assets/icons/pin.svg',
-                                color: primaryColor,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const EditAddress(),
-                                  ),
-                                );
-                              },
-                              label: const Text(
-                                'Add address',
-                                style: TextStyle(
-                                  inherit: true,
-                                  fontFamily: 'DMSans',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: dark,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        Address address = data[0];
-                        final finalAddress =
-                            "${address.locality}, ${address.landmark}, ${address.city}, ${address.state}";
-                        return SizedBox(
-                          width: double.infinity,
-                          child: Row(
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned(
+            top: -639,
+            left: -235,
+            child: Container(
+              width: 906,
+              height: 906,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: homeScreenCircle,
+              ),
+            ),
+          ),
+          NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  title: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: addresses.when(
+                      data: (data) {
+                        if (data.isEmpty) {
+                          return Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Welcome',
+                                style: CustomTextStyle.boldTextStyleBlack(
+                                    fontSize: 26),
+                              ),
+                              const Spacer(),
+                              TextButton.icon(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                ),
+                                icon: SvgPicture.asset(
+                                  'assets/icons/pin.svg',
+                                  color: primaryColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const EditAddress(),
+                                    ),
+                                  );
+                                },
+                                label: Text(
+                                  'Add address',
+                                  style: CustomTextStyle.mediumTextStyleDark(
+                                          fontSize: 12)
+                                      .copyWith(inherit: true),
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          Address address = data[0];
+                          final finalAddress =
+                              "${address.locality}, ${address.landmark}, ${address.city}, ${address.state}";
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
                                 flex: 1,
                                 child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       address.fullName,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
+                                      style: CustomTextStyle.boldTextStyleBlack(
+                                          fontSize: 20),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
                                       finalAddress,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: grey,
-                                      ),
+                                      style: CustomTextStyle.mediumTextStyle(
+                                          fontSize: 14, color: grey),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -165,104 +162,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                     ),
                                   );
                                 },
-                                label: const Text(
+                                label: Text(
                                   'Add address',
-                                  style: TextStyle(
-                                    inherit: true,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: dark,
-                                  ),
+                                  style: CustomTextStyle.mediumTextStyleDark(
+                                          fontSize: 12)
+                                      .copyWith(inherit: true),
                                 ),
                               ),
                             ],
-                          ),
+                          );
+                        }
+                      },
+                      error: (error, stackTrace) {
+                        return Center(
+                          child: Text(error.toString()),
                         );
-                      }
-                    },
-                    error: (error, stackTrace) {
-                      return Center(
-                        child: Text(error.toString()),
-                      );
-                    },
-                    loading: () {
-                      return Row(
-                        children: [
-                          ShimmerWidget.rectangular(width: w * 0.5, height: 30),
-                          const Spacer(),
-                          ShimmerWidget.circular(
-                            width: w * 0.3,
-                            height: 40,
-                            shapeBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                50,
+                      },
+                      loading: () {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ShimmerWidget.rectangular(
+                                width: w * 0.5, height: 30),
+                            const Spacer(),
+                            ShimmerWidget.circular(
+                              width: w * 0.3,
+                              height: 40,
+                              shapeBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  50,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              SliverAppBar(
-                scrolledUnderElevation: 0.0,
-                pinned: true,
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                bottom: const PreferredSize(
-                  preferredSize: Size.fromHeight(10),
-                  child: SizedBox(),
-                ),
-                title: Container(
-                  height: 60,
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      prefixIcon: SvgPicture.asset(
-                        'assets/icons/search.svg',
-                        height: 24,
-                        width: 24,
-                        fit: BoxFit.scaleDown,
+                SliverAppBar(
+                  backgroundColor: homeScreenCircle,
+                  scrolledUnderElevation: 0.0,
+                  pinned: true,
+                  bottom: const PreferredSize(
+                    preferredSize: Size.fromHeight(10),
+                    child: SizedBox(),
+                  ),
+                  expandedHeight: 60,
+                  title: Container(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIcon: SvgPicture.asset(
+                          'assets/icons/search.svg',
+                          height: 24,
+                          width: 24,
+                          fit: BoxFit.scaleDown,
+                        ),
+                        hintText: 'Search',
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none),
+                        contentPadding: const EdgeInsets.all(10),
                       ),
-                      hintText: 'Search',
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                      contentPadding: const EdgeInsets.all(10),
+                      onChanged: (value) {},
+                      onEditingComplete: () {},
                     ),
-                    onChanged: (value) {},
-                    onEditingComplete: () {},
                   ),
-                ),
-              )
-            ];
-          },
-          body: Container(
-            color: Colors.white,
-            child: ListView(
+                )
+              ];
+            },
+            body: ListView(
               children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20, bottom: 20),
-                  child: Text(
-                    'Categories',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: dark,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                const HomeHeading(
+                  heading: 'Categories',
                 ),
                 categories.when(
                   data: (data) {
@@ -286,7 +266,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       category: data[index].name,
                                       priceSort: state.priceSort,
                                       ratingSort: state.ratingSort,
-                                      isVeg: state.isVeg,
                                     ),
                                   );
                               Navigator.of(context).push(
@@ -342,19 +321,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                 ),
                 Container(
-                  height: h * 0.2528,
+                  height: h * 0.3528,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: products.when(
                     data: (data) {
-                      return GridView.builder(
+                      return ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            width: 20,
+                          );
+                        },
                         scrollDirection: Axis.horizontal,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          childAspectRatio: 1.3,
-                        ),
                         itemCount: data.length <= 5 ? data.length : 5,
                         itemBuilder: (context, index) {
                           return GroceryItem(
@@ -396,7 +373,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

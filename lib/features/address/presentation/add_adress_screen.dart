@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grocery_app/common_widgets/custom_button.dart';
-import 'package:grocery_app/common_widgets/custom_button_text.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/common_widgets/custom_button.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
 import 'package:grocery_app/features/products/provider/network_provider.dart';

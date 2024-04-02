@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/main_screen.dart';
@@ -31,15 +32,21 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Grocery App',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          titleTextStyle: CustomTextStyle.appBarTextStyle(),
+          centerTitle: true,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
         fontFamily: 'DMSans',
         useMaterial3: true,
       ),
       home: onBoarding! == true
           ? const OnBoardingScreen()
           : token != ''
-              ? const LoginScreen()
+              ? const MainScreen()
               : const LoginScreen(),
     );
   }

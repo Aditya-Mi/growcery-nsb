@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grocery_app/common_widgets/custom_button.dart';
-import 'package:grocery_app/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/common_widgets/custom_button.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/otp_verification_screen.dart';
 import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/utils/helper_functions.dart';

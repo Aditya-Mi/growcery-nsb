@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery_app/common_widgets/custom_button.dart';
-import 'package:grocery_app/common_widgets/custom_button_text.dart';
-import 'package:grocery_app/constants/colors.dart';
+import 'package:grocery_app/core/common_widgets/custom_button.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
 
 import 'package:grocery_app/features/products/data/product.dart';
@@ -112,12 +113,8 @@ class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
                     children: [
                       Text(
                         widget.product.name,
-                        style: TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: h * 0.0284,
-                          fontWeight: FontWeight.bold,
-                          color: dark,
-                        ),
+                        style: CustomTextStyle.boldTextStyleDark(
+                            fontSize: h * 0.0284),
                         maxLines: 2,
                       ),
                       Row(
