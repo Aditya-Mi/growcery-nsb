@@ -210,6 +210,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: primaryColor),
+                            color: Colors.white,
                           ),
                           child: Row(
                             children: [
@@ -243,9 +244,9 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           width: w * 0.416,
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: primaryColor),
-                          ),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: primaryColor),
+                              color: Colors.white),
                           child: DropdownButton<String>(
                             isExpanded: true,
                             hint: const Text(
