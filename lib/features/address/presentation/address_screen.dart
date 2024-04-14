@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_2.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/presentation/address_list_item.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -35,9 +38,24 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
     final addressData = ref.watch(addressProvider);
     return Scaffold(
       appBar: AppBar(
+        leading: Container(
+          margin: const EdgeInsets.only(left: 10),
+          width: 44,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.transparent,
+              border: Border.all(color: stroke)),
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: dark,
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
         title: const Text(
-          'Shipping address',
+          'Addresses',
         ),
       ),
       body: addressData.when(
@@ -46,14 +64,42 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
               ? const Center(
                   child: Text('No addresses added'),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(20),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return AddressListItem(
-                      address: data[index],
-                    );
-                  },
+              : Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(20),
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return AddressListItem(
+                            address: data[index],
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      margin: const EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: lightBg,
+                      ),
+                      child: SizedBox(
+                        width: 150,
+                        child: CustomButton2(
+                          child: const CustomButtonText(title: 'Add Address'),
+                          function: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditAddress(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
         },
         error: (error, stackTrace) {
@@ -71,31 +117,6 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
             );
           },
           itemCount: 5,
-        ),
-      ),
-      floatingActionButton: Container(
-        height: 48,
-        width: 48,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: Color.fromRGBO(138, 149, 158, 0.15),
-            ),
-          ],
-        ),
-        child: IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const EditAddress(),
-              ),
-            );
-          },
         ),
       ),
     );

@@ -482,13 +482,14 @@ Pincode: ${address.pincode}
           return Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/error_image.png',
-                ),
-              ),
-            ),
+            // decoration: const BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage(
+            //       'assets/images/error_image.png',
+            //     ),
+            //   ),
+            // ),
+            child: Text(error.toString()),
           );
         },
         loading: () {
