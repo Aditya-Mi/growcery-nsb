@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grocery_app/core/common_widgets/floating_action_button.dart';
 import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/data/product.dart';
@@ -28,21 +29,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
       context: context,
       builder: (BuildContext context) {
         return Scaffold(
-          floatingActionButton: Container(
-            transform: Matrix4.translationValues(0.0, -60.0, 0.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: IconButton.styleFrom(
-                backgroundColor: Colors.black,
-              ),
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          floatingActionButton: const CustomFloatingActionButton(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -297,7 +284,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                             crossAxisCount: 2,
                             mainAxisSpacing: h * 0.0255,
                             crossAxisSpacing: w * 0.055,
-                            childAspectRatio: 0.61168224299,
+                            childAspectRatio: 0.60,
                           ),
                           itemBuilder: (context, index) {
                             return ItemScreenItem(

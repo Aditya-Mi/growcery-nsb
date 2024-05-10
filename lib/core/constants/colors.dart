@@ -9,6 +9,6 @@ const lightBg = Color.fromARGB(255, 243, 245, 247);
 const dark = Color.fromARGB(255, 6, 22, 28);
 const grey = Color.fromARGB(255, 151, 152, 153);
 const iris = Color.fromARGB(255, 93, 95, 239);
-const lightPrimary = Color.fromARGB(255, 107, 168, 33);
+const lightPrimary = Color.fromARGB(255, 237, 235, 255);
 const homeScreenCircle = Color.fromARGB(255, 248, 248, 255);
 final blackWith46Opacity = Colors.black.withOpacity(0.46);

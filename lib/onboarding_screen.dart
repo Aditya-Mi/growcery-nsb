@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/core/common_widgets/custom_button.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/core/constants/colors.dart';
+import 'package:grocery_app/core/constants/images.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +43,7 @@ class OnBoardingScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.white),
-                  child: Image.asset('assets/images/logo.png'),
+                  child: Image.asset(Images.logo),
                 ),
                 const SizedBox(
                   height: 32,
@@ -93,7 +94,7 @@ class OnBoardingScreen extends StatelessWidget {
                   ),
                 ),
                 Image.asset(
-                  'assets/images/onboarding.png',
+                  Images.onBoarding,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
                 ),

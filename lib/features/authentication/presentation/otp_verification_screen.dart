@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/core/constants/images.dart';
 import 'package:grocery_app/features/authentication/presentation/login_screen.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/core/constants/colors.dart';
@@ -100,6 +101,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         mainAxisSize: MainAxisSize.max,
         children: [
           const Spacer(),
+          Image.asset(Images.logo),
+          const SizedBox(height: 16),
           const Text(
             'Enter OTP',
             style: TextStyle(
@@ -183,6 +186,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                     setState(() {
                       isLoading = true;
                     });
+                    FocusManager.instance.primaryFocus?.unfocus();
                     bool success = await ref
                         .read(authProvider.notifier)
                         .login(widget.phoneNo, enteredOtp);

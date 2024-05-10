@@ -1,15 +1,29 @@
 import 'package:grocery_app/features/products/data/category.dart';
+import 'package:hive/hive.dart';
 
+part 'product.g.dart';
+
+@HiveType(typeId: 1)
 class Product {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String description;
+  @HiveField(3)
   int price;
+  @HiveField(4)
   int discountedPrice;
+  @HiveField(5)
   String quantity;
+  @HiveField(6)
   Category category;
+  @HiveField(7)
   bool inStock;
+  @HiveField(8)
   String image;
+  @HiveField(9)
   int v;
 
   Product({

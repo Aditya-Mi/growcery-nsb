@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/core/common_widgets/custom_button.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/constants/images.dart';
 import 'package:grocery_app/features/authentication/provider/auth_provider.dart';
 import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/features/authentication/presentation/otp_verification_screen.dart';
@@ -32,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Spacer(),
-          Image.asset('assets/images/logo.png'),
+          Image.asset(Images.logo),
           const SizedBox(height: 16),
           const Text(
             'Enter your mobile number',
@@ -110,6 +111,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         );
                         return;
                       }
+                      FocusManager.instance.primaryFocus?.unfocus();
+
                       setState(() {
                         isLoading = true;
                       });

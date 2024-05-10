@@ -39,9 +39,9 @@ class HomeCategoryListItem extends StatelessWidget {
           Text(
             category.name,
             style: CustomTextStyle.mediumTextStyleDark(
-              fontSize: h * 0.01658,
+              fontSize: 12,
             ),
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
         ],

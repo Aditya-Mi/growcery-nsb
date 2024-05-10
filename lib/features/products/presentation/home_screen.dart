@@ -11,6 +11,7 @@ import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/presentation/items_screen.dart';
 import 'package:grocery_app/features/products/presentation/widgets/grocery_item.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_category_list_item.dart';
+import 'package:grocery_app/features/products/presentation/widgets/home_deliver_card.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_heading_item.dart';
 import 'package:grocery_app/features/products/provider/network_provider.dart';
 import 'package:grocery_app/features/products/provider/product_provider.dart';
@@ -204,11 +205,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   backgroundColor: homeScreenCircle,
                   scrolledUnderElevation: 0.0,
                   pinned: true,
-                  bottom: const PreferredSize(
-                    preferredSize: Size.fromHeight(10),
-                    child: SizedBox(),
-                  ),
-                  expandedHeight: 60,
                   title: Container(
                     height: 60,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -241,9 +237,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
             body: ListView(
               children: [
-                const HomeHeading(
-                  heading: 'Categories',
+                const HomeDeliverCard(),
+                const SizedBox(
+                  height: 14,
                 ),
+                Container(
+                  alignment: Alignment.center,
+                  color: lightBg,
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: const Text(
+                    'Currently available for users of Charkhi Dadri, Haryana (127306) only ',
+                    style: TextStyle(
+                      color: secondaryColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const HomeHeading(heading: 'Categories'),
                 categories.when(
                   data: (data) {
                     return SizedBox(

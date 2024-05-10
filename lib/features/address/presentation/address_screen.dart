@@ -67,12 +67,17 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
               : Column(
                   children: [
                     Expanded(
-                      child: ListView.builder(
+                      child: ListView.separated(
                         padding: const EdgeInsets.all(20),
                         itemCount: data.length,
                         itemBuilder: (context, index) {
                           return AddressListItem(
                             address: data[index],
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(
+                            height: 10,
                           );
                         },
                       ),

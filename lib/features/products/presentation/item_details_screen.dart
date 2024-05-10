@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:grocery_app/core/common_widgets/add_button.dart';
 import 'package:grocery_app/core/common_widgets/custom_button.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
+import 'package:grocery_app/core/common_widgets/floating_action_button.dart';
+import 'package:grocery_app/core/common_widgets/increase_decrease_widget.dart';
 import 'package:grocery_app/core/constants/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/core/constants/custom_textstyle.dart';
+import 'package:grocery_app/features/cart/data/cart.dart';
 import 'package:grocery_app/features/cart/provider/cart_provider.dart';
 
 import 'package:grocery_app/features/products/data/product.dart';
@@ -18,229 +21,164 @@ class ItemDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
-  Future<void> addItemToCart(String id) async {
-    await ref.read(cartItemsProvider.notifier).addItemToCart(id);
-  }
-
-  Future<void> deleteItemFromCart(String id) async {
-    await ref.read(cartItemsProvider.notifier).deleteItemFromCart(id);
-  }
-
-  Future<void> increaseQuantityInCart(String id) async {
-    await ref.read(cartItemsProvider.notifier).increaseQuantityItem(id);
-  }
-
-  Future<void> decreaseQuantityInCart(String id) async {
-    await ref.read(cartItemsProvider.notifier).decreaseQuantityItem(id);
-  }
-
-  String extractQuantity(String inputString) {
-    RegExp regex = RegExp(r'\(([^)]+)\)');
-    RegExpMatch? match = regex.firstMatch(inputString);
-    return match != null ? match.group(1)?.trim() ?? '' : '';
-  }
-
-  String extractProductDesc(String inputString) {
-    RegExp regex = RegExp(r'([^()]+)');
-    RegExpMatch? match = regex.firstMatch(inputString);
-    return match != null ? match.group(1)?.trim() ?? '' : '';
-  }
-
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    final cartNotifer = ref.watch(cartItemsProvider);
-
+    final cart = ref.watch(cartItemsProvider);
     return Scaffold(
-      backgroundColor: lightBg,
-      body: cartNotifer.when(
-        data: (data) {
-          final isInCart =
-              ref.read(cartItemsProvider.notifier).isInCart(widget.product.id);
-          int quantity = 0;
-          if (isInCart) {
-            final cartItem = data.cartItem.firstWhere(
-                (element) => element.itemDetails.id == widget.product.id);
-            quantity = cartItem.quantity;
-          }
-          return SizedBox(
-            height: double.infinity,
-            width: double.infinity,
+      floatingActionButton: const CustomFloatingActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      body: Stack(
+        children: [
+          // Positioned(
+          //   top: -100,
+          //   child: Container(
+          //     height: 200,
+          //     width: double.infinity,
+          //     decoration: const BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       color: lightBg,
+          //     ),
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
+                Center(
+                  child: Image.network(
+                    widget.product.image,
+                  ),
+                ),
+                Text(
+                  widget.product.name,
+                  style: CustomTextStyle.boldTextStyleDark(fontSize: 20),
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  widget.product.description,
+                  style: CustomTextStyle.boldTextStyle(
+                      fontSize: 12, color: dark.withOpacity(0.63)),
+                  textAlign: TextAlign.justify,
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ClipPath(
-                      clipper: CustomClipPath(),
-                      child: Container(
-                        height: h * 0.50549763033,
-                        width: double.infinity,
-                        color: Colors.white,
-                      ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.product.quantity,
+                          style: CustomTextStyle.boldTextStyleDark(fontSize: 12)
+                              .copyWith(color: const Color(0xffb4b4b4)),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '\u{20B9}${widget.product.discountedPrice}',
+                              style: CustomTextStyle.boldTextStyleBlack(
+                                  fontSize: 20),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '\u{20B9}${widget.product.price}',
+                              style: CustomTextStyle.boldTextStyleBlack46(
+                                      fontSize: 16)
+                                  .copyWith(
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: h * 0.05061611374,
-                      child: Image.network(
-                        widget.product.image,
-                      ),
-                    ),
-                    Positioned(
-                      top: 50,
-                      left: 20,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: IconButton.styleFrom(backgroundColor: lightBg),
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                      ),
+                    const Spacer(),
+                    cart.when(
+                      data: (data) {
+                        final isInCart = ref
+                            .read(cartItemsProvider.notifier)
+                            .isInCart(widget.product.id);
+                        int quantity = 0;
+                        if (isInCart) {
+                          quantity = ref
+                              .read(cartItemsProvider.notifier)
+                              .getQuantity(widget.product.id);
+                        }
+                        return isInCart
+                            ? IncreaseDecreaseWidget(
+                                isItemDetailScreen: true,
+                                quantity: quantity,
+                                increaseOnPressed: () {
+                                  ref
+                                      .read(cartItemsProvider.notifier)
+                                      .increaseQuantityItem(widget.product.id);
+                                },
+                                decreaseOnPressed: () {
+                                  if (quantity == 1) {
+                                    ref
+                                        .read(cartItemsProvider.notifier)
+                                        .deleteItemFromCart(widget.product.id);
+                                  } else {
+                                    ref
+                                        .read(cartItemsProvider.notifier)
+                                        .decreaseQuantityItem(
+                                            widget.product.id);
+                                  }
+                                },
+                              )
+                            : AddButton(onPressed: () {
+                                CartItem cartItem = CartItem(
+                                    itemDetails: widget.product,
+                                    quantity: 1,
+                                    id: widget.product.id);
+                                ref
+                                    .read(cartItemsProvider.notifier)
+                                    .addItemToCart(cartItem);
+                              });
+                      },
+                      loading: () => const CircularProgressIndicator(),
+                      error: (error, stackTrace) {
+                        return const CircularProgressIndicator();
+                      },
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: h * 0.03791469194,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.product.name,
-                        style: CustomTextStyle.boldTextStyleDark(
-                            fontSize: h * 0.0284),
-                        maxLines: 2,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '\u{20B9}${widget.product.price}, ${extractQuantity(widget.product.description)}',
-                            style: TextStyle(
-                              fontFamily: 'DMSans',
-                              fontSize: h * 0.0236,
-                              fontWeight: FontWeight.bold,
-                              color: secondaryColor,
-                            ),
-                          ),
-                          const Spacer(),
-                          if (isInCart)
-                            InkWell(
-                              onTap: () async {
-                                if (quantity == 1) {
-                                  await deleteItemFromCart(widget.product.id);
-                                } else {
-                                  await decreaseQuantityInCart(
-                                      widget.product.id);
-                                }
-                              },
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white,
-                                ),
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                  "assets/icons/minus.svg",
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          if (isInCart)
-                            SizedBox(
-                              width: w * 0.0410,
-                            ),
-                          if (isInCart)
-                            Text(
-                              '$quantity',
-                              style: const TextStyle(
-                                fontFamily: 'DMSans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: dark,
-                              ),
-                            ),
-                          if (isInCart)
-                            SizedBox(
-                              width: w * 0.0410,
-                            ),
-                          if (isInCart)
-                            InkWell(
-                              onTap: () async {
-                                await increaseQuantityInCart(widget.product.id);
-                              },
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: primaryColor,
-                                ),
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: h * 0.0105,
-                      ),
-                      Text(
-                        extractProductDesc(widget.product.description),
-                        style: TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: h * 0.0189,
-                          fontWeight: FontWeight.bold,
-                          color: grey,
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
-                      SizedBox(
-                        height: h * 0.0305,
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                isInCart
-                    ? CustomButton(
-                        child:
-                            const CustomButtonText(title: 'Remove from cart'),
-                        function: () async {
-                          await deleteItemFromCart(widget.product.id);
-                        },
-                      )
-                    : CustomButton(
-                        child: const CustomButtonText(title: 'Add to cart'),
-                        function: () async {
-                          await addItemToCart(widget.product.id);
-                        },
-                      ),
-                const SizedBox(
-                  height: 30,
-                ),
+                // isInCart
+                //     ? CustomButton(
+                //         child: const CustomButtonText(title: 'Remove from cart'),
+                //         function: () async {
+                //           await ref
+                //               .read(cartItemsProvider.notifier)
+                //               .deleteItemFromCart(widget.product.id);
+                //         },
+                //       )
+                //     : CustomButton(
+                //         child: const CustomButtonText(title: 'Add to cart'),
+                //         function: () async {
+                //           final cartItem = CartItem(
+                //               itemDetails: widget.product,
+                //               quantity: 1,
+                //               id: widget.product.id);
+                //           await ref
+                //               .read(cartItemsProvider.notifier)
+                //               .addItemToCart(cartItem);
+                //         },
+                //       ),
               ],
             ),
-          );
-        },
-        error: (error, stackTrace) => Center(
-          child: Text(
-            error.toString(),
           ),
-        ),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        ],
       ),
     );
   }

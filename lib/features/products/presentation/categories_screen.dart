@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/presentation/items_screen.dart';
-import 'package:grocery_app/features/products/presentation/widgets/category_list_item.dart';
+import 'package:grocery_app/features/products/presentation/widgets/home_category_list_item.dart';
 import 'package:grocery_app/features/products/provider/product_provider.dart';
 
 class CategoriesScreen extends ConsumerStatefulWidget {
@@ -27,7 +27,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
           return GridView.builder(
             padding: const EdgeInsets.all(20),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: 4,
               mainAxisSpacing: 20,
               childAspectRatio: 0.91168224299,
             ),
@@ -48,7 +48,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
                     ),
                   );
                 },
-                child: CategoryScreenItem(
+                child: HomeCategoryListItem(
                   category: data[index],
                 ),
               );
