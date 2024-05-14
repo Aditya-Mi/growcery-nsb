@@ -23,13 +23,12 @@ class _GroceryItemState extends ConsumerState<GroceryItem> {
     final cart = ref.watch(cartItemsProvider);
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ItemDetailsScreen(
-              product: widget.product,
-            ),
-          ),
-        );
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return ItemDetailsScreen(product: widget.product);
+            });
       },
       child: SizedBox(
         width: 165,

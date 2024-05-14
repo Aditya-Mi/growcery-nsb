@@ -8,19 +8,25 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        alignment: Alignment.center,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: primaryColor),
+    return SizedBox(
+      height: 36,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          alignment: Alignment.center,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-      ),
-      child: Text(
-        'ADD',
-        style: CustomTextStyle.boldTextStylePrimaryColor(fontSize: 14),
+        child: Text(
+          'ADD',
+          style: CustomTextStyle.boldTextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

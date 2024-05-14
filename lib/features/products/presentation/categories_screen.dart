@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocery_app/features/products/data/category.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/presentation/items_screen.dart';
 import 'package:grocery_app/features/products/presentation/widgets/home_category_list_item.dart';
@@ -18,26 +19,31 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
     final categories = ref.watch(categoryProvider);
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0,
-        centerTitle: true,
         title: const Text('Categories'),
       ),
       body: categories.when(
         data: (data) {
+          Map<String, int> categoryLengths = {};
+          for (var category in data) {
+            categoryLengths[category.name] = category.name.length;
+          }
+          List<Category> sortedCategories = data.toList()
+            ..sort((a, b) =>
+                categoryLengths[b.name]!.compareTo(categoryLengths[a.name]!));
           return GridView.builder(
             padding: const EdgeInsets.all(20),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               mainAxisSpacing: 20,
-              childAspectRatio: 0.91168224299,
+              mainAxisExtent: 120,
             ),
-            itemCount: data.length,
+            itemCount: sortedCategories.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   ref.read(filterProvider.notifier).update(
                         (state) => Filters(
-                          category: data[index].name,
+                          category: sortedCategories[index].name,
                           priceSort: state.priceSort,
                           ratingSort: state.ratingSort,
                         ),
@@ -49,7 +55,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
                   );
                 },
                 child: HomeCategoryListItem(
-                  category: data[index],
+                  category: sortedCategories[index],
                 ),
               );
             },

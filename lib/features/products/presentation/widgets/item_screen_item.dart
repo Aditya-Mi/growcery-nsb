@@ -25,6 +25,7 @@ class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
       onTap: () {
         showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (context) {
               return ItemDetailsScreen(product: widget.product);
             });
@@ -37,6 +38,7 @@ class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -51,7 +53,7 @@ class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: 10,
             ),
             Text(
               widget.product.name,
@@ -59,16 +61,16 @@ class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            // const SizedBox(
+            //   height: 8,
+            // ),
             Text(
               widget.product.quantity,
               style: CustomTextStyle.boldTextStyleBlack4612(),
             ),
-            const SizedBox(
-              height: 11,
-            ),
+            // const SizedBox(
+            //   height: 11,
+            // ),
             Row(
               children: [
                 Column(

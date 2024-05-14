@@ -11,30 +11,28 @@ class HomeCategoryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String baseUrl = 'https://growcery-x6sg.onrender.com';
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
     return SizedBox(
-      width: w * 0.2,
-      height: h * 0.0918,
+      width: 80,
+      height: 120,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: h * 0.089,
-            height: w * 0.194,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: lightBg,
               image: DecorationImage(
-                fit: BoxFit.cover,
-                onError: (exception, stackTrace) {
-                  return;
-                },
+                fit: BoxFit.fitHeight,
                 image:
                     NetworkImage('$baseUrl' '${category.image.substring(6)}'),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 2,
           ),
           Text(
             category.name,
@@ -42,6 +40,7 @@ class HomeCategoryListItem extends StatelessWidget {
               fontSize: 12,
             ),
             maxLines: 2,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
           ),
         ],

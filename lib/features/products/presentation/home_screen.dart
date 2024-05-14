@@ -7,6 +7,7 @@ import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
+import 'package:grocery_app/features/products/data/category.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
 import 'package:grocery_app/features/products/presentation/items_screen.dart';
 import 'package:grocery_app/features/products/presentation/widgets/grocery_item.dart';
@@ -63,235 +64,280 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0.0,
-                  title: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: addresses.when(
-                      data: (data) {
-                        if (data.isEmpty) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Welcome',
-                                style: CustomTextStyle.boldTextStyleBlack(
-                                    fontSize: 26),
-                              ),
-                              const Spacer(),
-                              TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
-                                ),
-                                icon: SvgPicture.asset(
-                                  'assets/icons/pin.svg',
-                                  color: primaryColor,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const EditAddress(),
-                                    ),
-                                  );
-                                },
-                                label: Text(
-                                  'Add address',
-                                  style: CustomTextStyle.mediumTextStyleDark(
-                                          fontSize: 12)
-                                      .copyWith(inherit: true),
-                                ),
-                              ),
-                            ],
-                          );
-                        } else {
-                          Address address = data[0];
-                          final finalAddress =
-                              "${address.locality}, ${address.landmark}, ${address.city}, ${address.state}";
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      address.fullName,
-                                      style: CustomTextStyle.boldTextStyleBlack(
-                                          fontSize: 20),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      finalAddress,
-                                      style: CustomTextStyle.mediumTextStyle(
-                                          fontSize: 14, color: grey),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 10),
-                                ),
-                                icon: SvgPicture.asset('assets/icons/pin.svg'),
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const EditAddress(),
-                                    ),
-                                  );
-                                },
-                                label: Text(
-                                  'Add address',
-                                  style: CustomTextStyle.mediumTextStyleDark(
-                                          fontSize: 12)
-                                      .copyWith(inherit: true),
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                      error: (error, stackTrace) {
-                        return Center(
-                          child: Text(error.toString()),
-                        );
-                      },
-                      loading: () {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ShimmerWidget.rectangular(
-                                width: w * 0.5, height: 30),
-                            const Spacer(),
-                            ShimmerWidget.circular(
-                              width: w * 0.3,
-                              height: 40,
-                              shapeBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  50,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                SliverAppBar(
-                  backgroundColor: homeScreenCircle,
-                  scrolledUnderElevation: 0.0,
-                  pinned: true,
-                  title: Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        prefixIcon: SvgPicture.asset(
-                          'assets/icons/search.svg',
-                          height: 24,
-                          width: 24,
-                          fit: BoxFit.scaleDown,
-                        ),
-                        hintText: 'Search',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none),
-                        contentPadding: const EdgeInsets.all(10),
-                      ),
-                      onChanged: (value) {},
-                      onEditingComplete: () {},
-                    ),
-                  ),
-                )
-              ];
-            },
-            body: ListView(
-              children: [
-                const HomeDeliverCard(),
-                const SizedBox(
-                  height: 14,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  color: lightBg,
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: const Text(
-                    'Currently available for users of Charkhi Dadri, Haryana (127306) only ',
-                    style: TextStyle(
-                      color: secondaryColor,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const HomeHeading(heading: 'Categories'),
-                categories.when(
+          ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: addresses.when(
                   data: (data) {
-                    return SizedBox(
-                      width: double.infinity,
-                      height: h * 0.45,
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                          mainAxisSpacing: 25,
-                          childAspectRatio: 1,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              ref.read(filterProvider.notifier).update(
-                                    (state) => Filters(
-                                      category: data[index].name,
-                                      priceSort: state.priceSort,
-                                      ratingSort: state.ratingSort,
-                                    ),
-                                  );
+                    if (data.isEmpty) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Welcome',
+                            style: CustomTextStyle.boldTextStyleBlack(
+                                fontSize: 26),
+                          ),
+                          const Spacer(),
+                          TextButton.icon(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                            ),
+                            icon: SvgPicture.asset(
+                              'assets/icons/pin.svg',
+                              color: primaryColor,
+                            ),
+                            onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const ItemsScreen(),
+                                  builder: (context) => const EditAddress(),
                                 ),
                               );
                             },
-                            child: HomeCategoryListItem(
-                              category: data[index],
+                            label: Text(
+                              'Add address',
+                              style: CustomTextStyle.mediumTextStyleDark(
+                                      fontSize: 12)
+                                  .copyWith(inherit: true),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      Address address = data[0];
+                      final finalAddress =
+                          "${address.locality}, ${address.landmark}, ${address.city}, ${address.state}";
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  address.fullName,
+                                  style: CustomTextStyle.boldTextStyleBlack(
+                                      fontSize: 20),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  finalAddress,
+                                  style: CustomTextStyle.mediumTextStyle(
+                                      fontSize: 14, color: grey),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          TextButton.icon(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                            ),
+                            icon: SvgPicture.asset('assets/icons/pin.svg'),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const EditAddress(),
+                                ),
+                              );
+                            },
+                            label: Text(
+                              'Add address',
+                              style: CustomTextStyle.mediumTextStyleDark(
+                                      fontSize: 12)
+                                  .copyWith(inherit: true),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                  error: (error, stackTrace) {
+                    return Center(
+                      child: Text(error.toString()),
+                    );
+                  },
+                  loading: () {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ShimmerWidget.rectangular(width: w * 0.5, height: 30),
+                        const Spacer(),
+                        ShimmerWidget.circular(
+                          width: w * 0.3,
+                          height: 40,
+                          shapeBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 60,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: SvgPicture.asset(
+                      'assets/icons/search.svg',
+                      height: 24,
+                      width: 24,
+                      fit: BoxFit.scaleDown,
+                    ),
+                    hintText: 'Search',
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none),
+                    contentPadding: const EdgeInsets.all(10),
+                  ),
+                  onChanged: (value) {},
+                  onEditingComplete: () {},
+                ),
+              ),
+              const SizedBox(height: 10),
+              const HomeDeliverCard(),
+              const SizedBox(height: 14),
+              Container(
+                alignment: Alignment.center,
+                color: lightBg,
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: const Text(
+                  'Currently available for users of Charkhi Dadri, Haryana (127306) only ',
+                  style: TextStyle(
+                    color: secondaryColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const HomeHeading(heading: 'Categories'),
+              categories.when(
+                data: (data) {
+                  Map<String, int> categoryLengths = {};
+                  for (var category in data) {
+                    categoryLengths[category.name] = category.name.length;
+                  }
+                  List<Category> sortedCategories = data.toList()
+                    ..sort((a, b) => categoryLengths[b.name]!
+                        .compareTo(categoryLengths[a.name]!));
+                  return GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 120,
+                    ),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          ref.read(filterProvider.notifier).update(
+                                (state) => Filters(
+                                  category: sortedCategories[index].name,
+                                  priceSort: state.priceSort,
+                                  ratingSort: state.ratingSort,
+                                ),
+                              );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ItemsScreen(),
                             ),
                           );
                         },
-                        itemCount: data.length,
-                      ),
+                        child: HomeCategoryListItem(
+                          category: sortedCategories[index],
+                        ),
+                      );
+                    },
+                    itemCount: sortedCategories.length,
+                  );
+                },
+                error: (error, stackTrace) {
+                  debugPrint(stackTrace.toString());
+                  return const Center(
+                    child: Text(
+                      'Something went wrong. Please try again later.',
+                    ),
+                  );
+                },
+                loading: () => SizedBox(
+                  width: double.infinity,
+                  height: h * 0.45,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      mainAxisSpacing: 25,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      return const HomeCategoryShimmerListItem();
+                    },
+                    itemCount: 12,
+                  ),
+                ),
+              ),
+              HomeHeading(
+                heading: 'Best selling',
+                function: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ItemsScreen(),
+                    ),
+                  );
+                },
+              ),
+              Container(
+                height: h * 0.3528,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: products.when(
+                  data: (data) {
+                    return ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 20,
+                        );
+                      },
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.length <= 5 ? data.length : 5,
+                      itemBuilder: (context, index) {
+                        return GroceryItem(
+                          product: data[index],
+                        );
+                      },
                     );
                   },
                   error: (error, stackTrace) {
@@ -302,87 +348,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     );
                   },
-                  loading: () => SizedBox(
-                    width: double.infinity,
-                    height: h * 0.45,
-                    child: GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 25,
-                        childAspectRatio: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        return const HomeCategoryShimmerListItem();
-                      },
-                      itemCount: 12,
-                    ),
-                  ),
-                ),
-                HomeHeading(
-                  heading: 'Best selling',
-                  function: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ItemsScreen(),
+                  loading: () {
+                    return Container(
+                      height: h * 0.2528,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 20,
+                          crossAxisSpacing: 20,
+                          childAspectRatio: 1.3,
+                        ),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return const GroceryShimmerListItem();
+                        },
                       ),
                     );
                   },
                 ),
-                Container(
-                  height: h * 0.3528,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: products.when(
-                    data: (data) {
-                      return ListView.separated(
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            width: 20,
-                          );
-                        },
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.length <= 5 ? data.length : 5,
-                        itemBuilder: (context, index) {
-                          return GroceryItem(
-                            product: data[index],
-                          );
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      debugPrint(stackTrace.toString());
-                      return const Center(
-                        child: Text(
-                          'Something went wrong. Please try again later.',
-                        ),
-                      );
-                    },
-                    loading: () {
-                      return Container(
-                        height: h * 0.2528,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: GridView.builder(
-                          scrollDirection: Axis.horizontal,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1,
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 20,
-                            childAspectRatio: 1.3,
-                          ),
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            return const GroceryShimmerListItem();
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
