@@ -235,7 +235,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   'Currently available for users of Charkhi Dadri, Haryana (127306) only ',
                   style: TextStyle(
                     color: secondaryColor,
-                    fontSize: 10,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

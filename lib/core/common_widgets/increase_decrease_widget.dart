@@ -23,9 +23,9 @@ class IncreaseDecreaseWidget extends StatelessWidget {
       width: width,
       height: 36,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: primaryColor,
-      ),
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(color: primaryColor)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,20 +35,20 @@ class IncreaseDecreaseWidget extends StatelessWidget {
             child: Icon(
               Icons.remove_rounded,
               size: iconSize,
-              color: Colors.white,
+              color: primaryColor,
             ),
           ),
           Text(
             '$quantity',
             style: CustomTextStyle.boldTextStyle(
-                fontSize: fontSize, color: Colors.white),
+                fontSize: fontSize, color: primaryColor),
           ),
           GestureDetector(
             onTap: increaseOnPressed,
             child: Icon(
               Icons.add,
               size: iconSize,
-              color: Colors.white,
+              color: primaryColor,
             ),
           ),
         ],

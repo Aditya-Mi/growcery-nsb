@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery_app/core/common_widgets/custom_button.dart';
+import 'package:grocery_app/core/common_widgets/custom_button_2.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/core/common_widgets/shimmer_widget.dart';
 import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/core/constants/custom_textstyle.dart';
+import 'package:grocery_app/core/constants/images.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -130,7 +131,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/empty_cart_image.png'),
+                    image: AssetImage(Images.emptyCart),
                   ),
                 ),
               );
@@ -337,9 +338,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                CustomButton(
+                                CustomButton2(
                                   child: const CustomButtonText(
-                                      title: 'Place order'),
+                                    title: 'Place order',
+                                  ),
                                   function: () async {
                                     if (_selectedAddress == null) {
                                       showDialog(

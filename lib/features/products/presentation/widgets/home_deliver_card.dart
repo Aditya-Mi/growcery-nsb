@@ -7,12 +7,14 @@ class HomeDeliverCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
-      height: 140,
+      height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         image: const DecorationImage(
           image: AssetImage(Images.homeDeliver),
+          fit: BoxFit.cover,
         ),
       ),
     );

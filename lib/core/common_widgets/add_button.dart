@@ -13,18 +13,18 @@ class AddButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           alignment: Alignment.center,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(color: primaryColor)),
         ),
         child: Text(
           'ADD',
           style: CustomTextStyle.boldTextStyle(
             fontSize: 14,
-            color: Colors.white,
+            color: primaryColor,
           ),
         ),
       ),

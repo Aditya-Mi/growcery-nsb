@@ -35,7 +35,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final mobileNo = ref.watch(mobileNoProvider);
     return Scaffold(

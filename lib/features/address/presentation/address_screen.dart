@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_2.dart';
 import 'package:grocery_app/core/common_widgets/custom_button_text.dart';
 import 'package:grocery_app/core/constants/colors.dart';
+import 'package:grocery_app/core/constants/images.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
 import 'package:grocery_app/features/address/presentation/address_list_item.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
@@ -61,8 +62,17 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
       body: addressData.when(
         data: (data) {
           return data.isEmpty
-              ? const Center(
-                  child: Text('No addresses added'),
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Image.asset(Images.noAddress),
+                      const Text('No addresses added'),
+                      const Spacer(),
+                      const AddAddressWidget(),
+                    ],
+                  ),
                 )
               : Column(
                   children: [
@@ -82,28 +92,7 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
                         },
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      margin: const EdgeInsets.all(10),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: lightBg,
-                      ),
-                      child: SizedBox(
-                        width: 150,
-                        child: CustomButton2(
-                          child: const CustomButtonText(title: 'Add Address'),
-                          function: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditAddress(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    const AddAddressWidget(),
                   ],
                 );
         },
@@ -113,6 +102,7 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
           );
         },
         loading: () => ListView.separated(
+          padding: const EdgeInsets.all(20),
           itemBuilder: (context, index) {
             return const AddressListItemShimmer();
           },
@@ -122,6 +112,38 @@ class _AddressScreenState extends ConsumerState<AddressScreen> {
             );
           },
           itemCount: 5,
+        ),
+      ),
+    );
+  }
+}
+
+class AddAddressWidget extends StatelessWidget {
+  const AddAddressWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      margin: const EdgeInsets.all(10),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: lightBg,
+      ),
+      child: SizedBox(
+        width: 150,
+        child: CustomButton2(
+          child: const CustomButtonText(title: 'Add Address'),
+          function: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditAddress(),
+            ),
+          ),
         ),
       ),
     );

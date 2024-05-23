@@ -48,30 +48,26 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
       ),
       child: Row(
         children: [
-          Flexible(
-            flex: 1,
-            fit: FlexFit.loose,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.address.fullName,
-                  style: CustomTextStyle.boldTextStyleDark(fontSize: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.address.fullName,
+                style: CustomTextStyle.boldTextStyleDark(fontSize: 16),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                finalAddress,
+                maxLines: 2,
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Color(0xff888888),
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  finalAddress,
-                  maxLines: 2,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Color(0xff888888),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           const Spacer(),
           IconButton(
@@ -121,7 +117,7 @@ class AddressListItemShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShimmerWidget.circular(
       width: double.infinity,
-      height: 100,
+      height: 80,
       shapeBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

@@ -22,12 +22,13 @@ class EditAddress extends ConsumerStatefulWidget {
 class _EditAddressState extends ConsumerState<EditAddress> {
   var addressType = ['Home', 'Work', 'Other'];
   final _form = GlobalKey<FormState>();
+  bool _isLoading = false;
   var _enteredName = '';
   var _enteredLocality = '';
-  var _enteredZipcode = '';
-  var _enteredCity = '';
+  var _enteredZipcode = '127306';
+  var _enteredCity = 'Charkhi Dadri';
   var _enteredLandmark = '';
-  var _enteredState = '';
+  var _enteredState = 'Haryana';
   var _enteredAlternateNo = '';
   var _addressType = 'Home';
 
@@ -65,7 +66,11 @@ class _EditAddressState extends ConsumerState<EditAddress> {
       return;
     }
     _form.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
     Address address;
+
     if (widget.address != null) {
       address = Address(
         fullName: _enteredName,
@@ -103,15 +108,18 @@ class _EditAddressState extends ConsumerState<EditAddress> {
           widget.address != null
               ? 'Address updated successfully'
               : 'New address added successfully');
+      setState(() {
+        _isLoading = false;
+      });
       Navigator.of(context).pop();
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    final heightOfContainer = h * 0.09;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
@@ -126,28 +134,16 @@ class _EditAddressState extends ConsumerState<EditAddress> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: h,
-          width: w,
+      body: Scaffold(
+        body: Padding(
           padding: const EdgeInsets.all(20),
           child: Form(
             key: _form,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,21 +167,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: lightGrey,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,19 +192,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,19 +217,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,19 +242,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,19 +267,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,19 +292,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: heightOfContainer,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,19 +317,8 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    height: h * 0.10,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: lightGrey),
-                      borderRadius: BorderRadius.circular(
-                        8,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10),
+                  const SizedBox(height: 20),
+                  CustomContainer(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,21 +340,24 @@ class _EditAddressState extends ConsumerState<EditAddress> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomButton(
-        function: () async {
-          bool isInternet = await checkInternetConnection();
-          if (isInternet) {
-            await _updateAddress();
-          }
-        },
-        child: const CustomButtonText(title: 'Save Address'),
+        function: _isLoading
+            ? null
+            : () async {
+                bool isInternet = await checkInternetConnection();
+                if (isInternet) {
+                  await _updateAddress();
+                }
+              },
+        child:
+            CustomButtonText(title: _isLoading ? 'Saving...' : 'Save Address'),
       ),
     );
   }
@@ -480,6 +400,27 @@ class CommonStyle {
         fontFamily: 'NunitoSans',
         fontWeight: FontWeight.w600,
       ),
+    );
+  }
+}
+
+class CustomContainer extends StatelessWidget {
+  final Widget child;
+  const CustomContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 65,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: lightGrey),
+        borderRadius: BorderRadius.circular(
+          8,
+        ),
+      ),
+      padding: const EdgeInsets.all(10),
+      child: child,
     );
   }
 }

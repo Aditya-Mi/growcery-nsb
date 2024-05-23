@@ -76,6 +76,7 @@ flutter:
     - assets/images/empty_cart_image.png
     - assets/images/order_placed_image.png
     - assets/images/home_deliver.png
+    - assets/images/no_address.png
     - assets/images/logo.png
     - assets/icons/home.svg
     - assets/icons/bag.svg

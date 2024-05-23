@@ -32,7 +32,7 @@ class HomeCategoryListItem extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 2,
+            height: 5,
           ),
           Text(
             category.name,

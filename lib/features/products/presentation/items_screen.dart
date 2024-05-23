@@ -115,8 +115,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
     final products = ref.watch(productProvider);
     final filters = ref.watch(filterProvider);
     final categories = ref.read(categoryProvider).value;
@@ -228,7 +226,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                       GestureDetector(
                         child: Container(
                           height: 36,
-                          width: w * 0.416,
+                          width: 150,
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
@@ -277,13 +275,16 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                     : Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.only(
-                              right: 20, left: 20, bottom: 20),
+                            right: 20,
+                            left: 20,
+                            bottom: 20,
+                          ),
                           itemCount: filteredList.length,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            mainAxisSpacing: h * 0.0255,
-                            crossAxisSpacing: w * 0.055,
+                            mainAxisSpacing: 15,
+                            crossAxisSpacing: 15,
                             childAspectRatio: 0.60,
                           ),
                           itemBuilder: (context, index) {
