@@ -1,23 +1,49 @@
 on: push
-name: Test, Build and Release apk
+name: Build and Release apk
 jobs:
   build:
-    name: Build APK
+    name: Build and Release apk
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-java@v1
+      #1 Checkout repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+      #2 Set up java
+    - name: Set Up Java
+      uses: actions/setup-java@v3.12.0
       with:
-        java-version: '12.x'
+        distribution: 'oracle'
+        java-version: '21'
         cache: 'gradle'
-    - uses: subosito/flutter-action@v1
+    
+      #3 Set up flutter
+    - name: Set Up Flutter
+      uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.16.9'
         channel: 'stable'
         cache: true
-    - run: flutter pub get
-    - run: flutter build apk --release
-    - uses: actions/upload-artifact@v1
+
+      #4 Install dependencies
+    - name: Install Dependencies
+      run: flutter pub get
+
+      #5 build apk
+    - name: Build APK
+      run: flutter build apk --release
+
+      #6 get those build to be available to download
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
       with:
         name: release-apk
         path: build/app/outputs/apk/release/app-release.apk
+     
+      #7 create release with those builds
+    - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
