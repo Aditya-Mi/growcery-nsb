@@ -48,61 +48,71 @@ class _AddressListItemState extends ConsumerState<AddressListItem> {
       ),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.address.fullName,
-                style: CustomTextStyle.boldTextStyleDark(fontSize: 16),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                finalAddress,
-                maxLines: 2,
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Color(0xff888888),
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.address.fullName,
+                  style: CustomTextStyle.boldTextStyleDark(fontSize: 16),
                 ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditAddress(
-                    address: widget.address,
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  finalAddress,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Color(0xff888888),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              );
-            },
-            style: IconButton.styleFrom(backgroundColor: Colors.white),
-            icon: const Icon(
-              Icons.edit_outlined,
-              color: dark,
+              ],
             ),
           ),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-            onPressed: () async {
-              bool isInternetAvailable = await checkInternetConnection();
-              if (isInternetAvailable) {
-                await ref
-                    .read(addressProvider.notifier)
-                    .deleteAddress(widget.address.id!);
-              }
-            },
-            icon: const Icon(
-              Icons.delete_rounded,
-              color: dark,
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditAddress(
+                          address: widget.address,
+                        ),
+                      ),
+                    );
+                  },
+                  style: IconButton.styleFrom(backgroundColor: Colors.white),
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    color: dark,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                  onPressed: () async {
+                    bool isInternetAvailable = await checkInternetConnection();
+                    if (isInternetAvailable) {
+                      await ref
+                          .read(addressProvider.notifier)
+                          .deleteAddress(widget.address.id!);
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.delete_rounded,
+                    color: dark,
+                  ),
+                  style: IconButton.styleFrom(backgroundColor: Colors.white),
+                ),
+              ],
             ),
-            style: IconButton.styleFrom(backgroundColor: Colors.white),
           ),
         ],
       ),

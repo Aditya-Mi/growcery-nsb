@@ -119,8 +119,9 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
     final filters = ref.watch(filterProvider);
     final categories = ref.read(categoryProvider).value;
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (_) async {
         ref.read(filterProvider.notifier).update(
               (state) => Filters(
                 category: null,
@@ -128,8 +129,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                 ratingSort: null,
               ),
             );
-        Navigator.of(context).pop(false);
-        return false;
+        Navigator.of(context).pop();
       },
       child: Scaffold(
         backgroundColor: stroke,
@@ -185,6 +185,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                     20,
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -195,7 +196,7 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: primaryColor),
-                            color: Colors.white,
+                            color: stroke,
                           ),
                           child: Row(
                             children: [
@@ -229,9 +230,10 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           width: 150,
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: primaryColor),
-                              color: Colors.white),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: primaryColor),
+                            color: stroke,
+                          ),
                           child: DropdownButton<String>(
                             isExpanded: true,
                             hint: const Text(
@@ -259,9 +261,6 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
                     ],
                   ),
                 ),
@@ -275,17 +274,17 @@ class _ItemsScreenState extends ConsumerState<ItemsScreen> {
                     : Expanded(
                         child: GridView.builder(
                           padding: const EdgeInsets.only(
-                            right: 20,
-                            left: 20,
+                            right: 10,
+                            left: 10,
                             bottom: 20,
                           ),
                           itemCount: filteredList.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 15,
-                            childAspectRatio: 0.60,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            mainAxisExtent: 300,
                           ),
                           itemBuilder: (context, index) {
                             return ItemScreenItem(

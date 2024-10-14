@@ -136,9 +136,9 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 ),
               );
             }
-            double totalPrice = 0;
-            double discountedPrice = 0;
-            double savings = 0;
+            int totalPrice = 0;
+            int discountedPrice = 0;
+            int savings = 0;
             for (var cartItem in data) {
               totalPrice += cartItem.itemDetails.price * cartItem.quantity;
               discountedPrice +=
@@ -159,8 +159,34 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                         );
                       },
                       itemBuilder: (context, index) {
-                        return CartListItem(
-                          cartItem: data[index],
+                        return Dismissible(
+                          key: Key(data[index].id),
+                          onDismissed: (direction) {
+                            ref
+                                .read(cartItemsProvider.notifier)
+                                .deleteItemFromCart(
+                                  data[index].itemDetails.id,
+                                );
+                          },
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(11),
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 30),
+                              child: Text(
+                                'Remove',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          child: CartListItem(
+                            cartItem: data[index],
+                          ),
                         );
                       },
                     ),
@@ -464,7 +490,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     required String subText,
     required bool isLast,
     required bool isFirst,
-    double savings = 0,
+    int savings = 0,
   }) {
     final intSavings = savings.toInt();
     return Row(

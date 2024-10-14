@@ -31,7 +31,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
             ..sort((a, b) =>
                 categoryLengths[b.name]!.compareTo(categoryLengths[a.name]!));
           return GridView.builder(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               mainAxisSpacing: 20,

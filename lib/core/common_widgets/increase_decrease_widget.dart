@@ -7,12 +7,13 @@ class IncreaseDecreaseWidget extends StatelessWidget {
   final VoidCallback increaseOnPressed;
   final VoidCallback decreaseOnPressed;
   final bool isItemDetailScreen;
-  const IncreaseDecreaseWidget(
-      {super.key,
-      required this.quantity,
-      required this.increaseOnPressed,
-      required this.decreaseOnPressed,
-      required this.isItemDetailScreen});
+  const IncreaseDecreaseWidget({
+    super.key,
+    required this.quantity,
+    required this.increaseOnPressed,
+    required this.decreaseOnPressed,
+    required this.isItemDetailScreen,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,9 @@ class IncreaseDecreaseWidget extends StatelessWidget {
       width: width,
       height: 36,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(color: primaryColor)),
+        borderRadius: BorderRadius.circular(10),
+        color: primaryColor,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,20 +36,20 @@ class IncreaseDecreaseWidget extends StatelessWidget {
             child: Icon(
               Icons.remove_rounded,
               size: iconSize,
-              color: primaryColor,
+              color: Colors.white,
             ),
           ),
           Text(
             '$quantity',
             style: CustomTextStyle.boldTextStyle(
-                fontSize: fontSize, color: primaryColor),
+                fontSize: fontSize, color: Colors.white),
           ),
           GestureDetector(
             onTap: increaseOnPressed,
             child: Icon(
               Icons.add,
               size: iconSize,
-              color: primaryColor,
+              color: Colors.white,
             ),
           ),
         ],

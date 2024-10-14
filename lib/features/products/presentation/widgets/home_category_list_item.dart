@@ -19,8 +19,8 @@ class HomeCategoryListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 80,
-            height: 80,
+            width: 75,
+            height: 75,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: lightBg,
@@ -37,7 +37,7 @@ class HomeCategoryListItem extends StatelessWidget {
           Text(
             category.name,
             style: CustomTextStyle.mediumTextStyleDark(
-              fontSize: 12,
+              fontSize: 11,
             ),
             maxLines: 2,
             textAlign: TextAlign.center,

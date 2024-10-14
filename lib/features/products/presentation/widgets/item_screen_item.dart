@@ -77,7 +77,7 @@ class _ItemScreenItemState extends ConsumerState<ItemScreenItem> {
                   children: [
                     Text(
                       '\u{20B9}${widget.product.discountedPrice}',
-                      style: CustomTextStyle.boldTextStyleBlack12(),
+                      style: CustomTextStyle.boldTextStyleBlack(fontSize: 14),
                     ),
                     Text(
                       '\u{20B9}${widget.product.price}',

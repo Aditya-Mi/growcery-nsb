@@ -21,7 +21,6 @@ class ItemDetailsScreen extends ConsumerStatefulWidget {
 class _ItemDetailsScreenState extends ConsumerState<ItemDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final cart = ref.watch(cartItemsProvider);
     return SizedBox(

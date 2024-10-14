@@ -6,6 +6,7 @@ import 'package:grocery_app/core/constants/colors.dart';
 import 'package:grocery_app/core/constants/custom_textstyle.dart';
 import 'package:grocery_app/features/address/data/address.dart';
 import 'package:grocery_app/features/address/presentation/add_adress_screen.dart';
+import 'package:grocery_app/features/address/presentation/address_screen.dart';
 import 'package:grocery_app/features/address/provider/address_provider.dart';
 import 'package:grocery_app/features/products/data/category.dart';
 import 'package:grocery_app/features/products/data/filters.dart';
@@ -52,22 +53,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
-            top: -639,
-            left: -235,
-            child: Container(
-              width: 906,
-              height: 906,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: homeScreenCircle,
-              ),
-            ),
-          ),
+          // Align(
+          //   child: Container(
+          //     width: 906,
+          //     height: 906,
+          //     decoration: const BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       color: homeScreenCircle,
+          //     ),
+          //   ),
+          // ),
           ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: addresses.when(
                   data: (data) {
                     if (data.isEmpty) {
@@ -119,25 +118,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         children: [
                           Flexible(
                             flex: 1,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  address.fullName,
-                                  style: CustomTextStyle.boldTextStyleBlack(
-                                      fontSize: 20),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  finalAddress,
-                                  style: CustomTextStyle.mediumTextStyle(
-                                      fontSize: 14, color: grey),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const AddressScreen(),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    address.fullName,
+                                    style: CustomTextStyle.boldTextStyleBlack(
+                                        fontSize: 20),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    finalAddress,
+                                    style: CustomTextStyle.mediumTextStyle(
+                                        fontSize: 14, color: grey),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -199,7 +207,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(height: 10),
               Container(
                 height: 60,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -235,12 +243,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   'Currently available for users of Charkhi Dadri, Haryana (127306) only ',
                   style: TextStyle(
                     color: secondaryColor,
-                    fontSize: 11,
+                    fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              const HomeHeading(heading: 'Categories'),
               categories.when(
                 data: (data) {
                   Map<String, int> categoryLengths = {};
@@ -300,8 +307,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
-                      mainAxisSpacing: 25,
-                      childAspectRatio: 1,
+                      mainAxisSpacing: 20,
+                      mainAxisExtent: 120,
                     ),
                     itemBuilder: (context, index) {
                       return const HomeCategoryShimmerListItem();

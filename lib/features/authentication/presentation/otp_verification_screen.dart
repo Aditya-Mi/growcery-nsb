@@ -34,7 +34,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   TextEditingController controller6 = TextEditingController();
   bool countDownComplete = false;
   Timer? countdownTimer;
-  Duration duration = const Duration(minutes: 2);
+  Duration duration = const Duration(minutes: 1);
   late String enteredOtp;
   late String receivedOtp;
   bool isLoading = false;
